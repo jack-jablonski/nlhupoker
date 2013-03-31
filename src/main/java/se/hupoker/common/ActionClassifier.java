@@ -9,5 +9,4 @@ public enum ActionClassifier {
     CALL,
     BET,
     RAISE
-
 }

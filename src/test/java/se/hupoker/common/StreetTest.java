@@ -9,6 +9,5 @@ public class StreetTest {
     @Test(expected = RuntimeException.class)
     public void nextStreetIsNull() {
         Street next = Street.RIVER.next();
-        System.out.println(next);
     }
 }

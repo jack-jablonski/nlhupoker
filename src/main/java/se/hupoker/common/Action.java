@@ -14,12 +14,12 @@ import static se.hupoker.common.ActionClassifier.*;
  */
 public class Action {
     private final Position position;
-	private final ActionClassifier action;
+	private final ActionClassifier classifier;
     private BigDecimal sum;
 
 	public Action(Position pos, ActionClassifier which) {
 		this.position = pos;
-        this.action = which;
+        this.classifier = which;
 	}
 
 	public Action(Position pos, ActionClassifier which, BigDecimal sum) {
@@ -34,7 +34,7 @@ public class Action {
     }
 
     public boolean ofClassifier(ActionClassifier classifier) {
-        return action == classifier;
+        return this.classifier == classifier;
     }
 
     public boolean isAggressive() {
@@ -45,6 +45,6 @@ public class Action {
 		return ofClassifier(CALL) || isAggressive();
 	}
 
-    public ActionClassifier getAction() { return action; }
+    public ActionClassifier getClassifier() { return classifier; }
     public Position getPosition() { return position; }
 }

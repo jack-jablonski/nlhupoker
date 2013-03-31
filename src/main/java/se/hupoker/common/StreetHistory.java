@@ -1,10 +1,6 @@
 package se.hupoker.common;
 
-import java.util.Collections;
-import java.util.EnumMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Alexander Nyberg

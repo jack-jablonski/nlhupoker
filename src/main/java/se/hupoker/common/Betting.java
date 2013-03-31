@@ -1,5 +1,7 @@
 package se.hupoker.common;
 
+import java.util.EnumSet;
+
 /**
  * @author Alexander Nyberg
  */
@@ -7,13 +9,31 @@ public enum Betting {
     /**
      * Check/Bet. Always this state if amount to call is zero.
      */
-    CB,
+    CB {
+        @Override
+        public EnumSet<ActionClassifier> available() {
+            return EnumSet.of(ActionClassifier.CHECK, ActionClassifier.BET);
+        }
+    },
     /**
      * Fold/Call/Raise
      */
-    FCR;
+    FCR {
+        @Override
+        public EnumSet<ActionClassifier> available() {
+            return EnumSet.of(ActionClassifier.FOLD, ActionClassifier.CALL, ActionClassifier.RAISE);
+        }
+    };
 
-    public static Betting fromToCall(float toCall) {
-        return (toCall > 0) ? FCR : CB;
+    public abstract EnumSet<ActionClassifier> available();
+
+    public static Betting get(ActionClassifier classifier) {
+        for (Betting betting : Betting.values()) {
+            if (betting.available().contains(classifier)) {
+                return betting;
+            }
+        }
+
+        throw new IllegalArgumentException();
     }
 }
