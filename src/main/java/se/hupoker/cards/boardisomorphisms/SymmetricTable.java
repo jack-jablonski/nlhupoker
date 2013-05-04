@@ -19,22 +19,18 @@ class SymmetricTable {
 	}
 
 	public Optional<Pair<HoleCards>> get(HoleRelation one, HoleRelation two) {
-		return Optional.of(table.get(one, two));
+		return Optional.fromNullable(table.get(one, two));
 	}
 
     /**
      * Add in both orders.
      */
 	public void add(HoleCards holeOne, HoleCards holeTwo, HoleRelation relOne, HoleRelation relTwo) {
-		/*
-		 * Standard
-		 */
+		 // Standard order
 		Pair<HoleCards> standardOrder = new Pair<>(holeOne, holeTwo);
 		table.put(relOne, relTwo, standardOrder);
 
-		/*
-		 * Reverse
-		 */
+		 // Reverse order
 		Pair<HoleCards> reverseOrder = new Pair<>(holeTwo, holeOne);
 		table.put(relTwo, relOne,  reverseOrder);
 	}

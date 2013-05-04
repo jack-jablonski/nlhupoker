@@ -4,6 +4,9 @@ import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.CardSet;
 
 /**
+ * Given some board:
+ * f: HoleCards -> Abstract representation
+ *
  * @author Alexander Nyberg
  */
 abstract class RelationManager {

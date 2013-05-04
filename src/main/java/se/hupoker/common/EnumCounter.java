@@ -11,6 +11,9 @@ public class EnumCounter<K extends Enum<K>> {
 
     public EnumCounter(Class<K> clazz) {
         counter = new EnumMap<>(clazz);
+        for (K enumeration : clazz.getEnumConstants()) {
+            counter.put(enumeration, 0);
+        }
     }
 
     public int get(K k) {

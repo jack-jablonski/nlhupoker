@@ -23,6 +23,15 @@ public class HoleCardsTest {
 		}
 	}
 
+    @Test
+    public void cardOrderDoesNotMatter() {
+        HoleCards first = HoleCards.from("2c4d");
+        HoleCards second = HoleCards.from("4d2c");
+
+        assertTrue(first.equals(second));
+        assertTrue(first.ordinal() == second.ordinal());
+    }
+
 	@Test
 	public void testHoleCardsEquals()  {
 		List<HoleCards> same = Arrays.asList(

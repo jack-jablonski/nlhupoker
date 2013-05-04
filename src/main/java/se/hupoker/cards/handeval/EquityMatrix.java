@@ -39,7 +39,7 @@ final public class EquityMatrix {
     private final CardSet board;
 
     private EquityMatrix(CardSet board) {
-        this.pairManager = new PairManager(board);
+        this.pairManager = PairManager.create(board);
         this.board = board;
 
         equities = new double[HoleCards.TexasCombinations][HoleCards.TexasCombinations];

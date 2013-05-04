@@ -15,11 +15,16 @@ public final class PairManager {
     private final SymmetricTable cache = new SymmetricTable();
     private int cacheMiss, cacheHit;
 
-	public PairManager(CardSet board) {
-        relationManager = RelationManager.factory(board);
+	private PairManager(RelationManager relationManager) {
+        this.relationManager = relationManager;
 	}
 
-	/**
+    public static PairManager create(CardSet board) {
+        RelationManager relationManager = RelationManager.factory(board);
+        return new PairManager(relationManager);
+    }
+
+    /**
 	 * 
 	 * @param holeOne
 	 * @param holeTwo
