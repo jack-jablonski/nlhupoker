@@ -1,6 +1,7 @@
 package se.hupoker.common;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 /**
@@ -15,6 +16,14 @@ public class DoubleMath {
 	public static boolean isNegative(BigDecimal decimal) {
 		return decimal.signum() < 0;
 	}
+
+    public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
+        return dividend.divide(divisor, 4, RoundingMode.HALF_UP);
+    }
+
+    public static boolean isZero(double a) {
+        return equal(a, 0.0);
+    }
 
     public static boolean equal(double a, double b) {
         return Math.abs(a - b) < epsilon;

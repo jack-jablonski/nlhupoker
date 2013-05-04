@@ -1,6 +1,11 @@
 package se.hupoker.common;
 
+import com.google.common.collect.ImmutableSet;
+import se.hupoker.inference.actiondistribution.CBDistribution;
+import se.hupoker.inference.actiondistribution.FCRDistribution;
+
 import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * @author Alexander Nyberg
@@ -11,8 +16,8 @@ public enum Betting {
      */
     CB {
         @Override
-        public EnumSet<ActionClassifier> available() {
-            return EnumSet.of(ActionClassifier.CHECK, ActionClassifier.BET);
+        public Set<ActionClassifier> available() {
+            return ImmutableSet.of(ActionClassifier.CHECK, ActionClassifier.BET);
         }
     },
     /**
@@ -20,12 +25,15 @@ public enum Betting {
      */
     FCR {
         @Override
-        public EnumSet<ActionClassifier> available() {
-            return EnumSet.of(ActionClassifier.FOLD, ActionClassifier.CALL, ActionClassifier.RAISE);
+        public Set<ActionClassifier> available() {
+            return ImmutableSet.of(ActionClassifier.FOLD, ActionClassifier.CALL, ActionClassifier.RAISE);
         }
     };
 
-    public abstract EnumSet<ActionClassifier> available();
+    /**
+     * @return The possible actions under given circumstance.
+     */
+    public abstract Set<ActionClassifier> available();
 
     public static Betting get(ActionClassifier classifier) {
         for (Betting betting : Betting.values()) {

@@ -2,6 +2,8 @@ package se.hupoker.common;
 
 import java.util.EnumSet;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Texas Holdem street.
  *
@@ -26,6 +28,10 @@ public enum Street {
 
     public static EnumSet<Street> allOf() {
         return EnumSet.allOf(Street.class);
+    }
+
+    public boolean hasNext() {
+        return this != RIVER;
     }
 
     /**
