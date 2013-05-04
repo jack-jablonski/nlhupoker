@@ -25,7 +25,8 @@ import static se.hupoker.common.Street.PREFLOP;
  */
 public class HeadsUp {
     /*
-     * Keep track on which street we're on. TODO should not be aware of this...
+     * Keep track on which street we're on.
+     * TODO should preferably not be aware of this...
      */
     private Street street = Street.first();
 
@@ -134,18 +135,18 @@ public class HeadsUp {
         /**
          * Catch any errors and wrap them into IllegalHandException.
          */
+        final CardSet parsedCards;
         try {
-            CardSet parsedCards = CardSet.from(trimmedCards);
-
-            // TODO: How do I do this in a good looking manner?
-            if (parsedCards.size() != street.numberOfNewBoardCards()) {
-                throw new Exception("Not the expected number of cards");
-            }
-
-            board.put(street, parsedCards);
+            parsedCards = CardSet.from(trimmedCards);
         } catch (Exception e) {
             throw new IllegalHandException("Malformed board on " + street + ": " + newCards, e);
         }
+
+        if (parsedCards.size() != street.numberOfNewBoardCards()) {
+            throw new IllegalHandException("Not the expected number of cards");
+        }
+
+        board.put(street, parsedCards);
     }
 
     /**
