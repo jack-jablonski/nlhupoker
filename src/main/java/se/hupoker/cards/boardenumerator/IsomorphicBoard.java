@@ -25,7 +25,7 @@ class IsomorphicBoard {
      * @return Have we seen this (isomorphic equal) board before?
      */
     public boolean seenAndAddBoard(CardSet board) {
-        CardSet isomorphic = boardTransformer.getIsomorphicBoard(board);
+        CardSet isomorphic = boardTransformer.getIsomorphic(board);
 
         return !cache.add(isomorphic);
     }

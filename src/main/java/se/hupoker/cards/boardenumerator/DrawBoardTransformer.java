@@ -15,9 +15,9 @@ class DrawBoardTransformer extends BoardTransformer {
      * @return Isomorphic suit pattern of lowest form (according to the natural order of {@link Suit})
      */
     @Override
-    public CardSet getIsomorphicBoard(CardSet original) {
+    public CardSet getIsomorphic(CardSet original) {
         Map<Suit, Suit> oldToNewSuits = new EnumMap<>(Suit.class);
-        Iterator<Suit> lowestSuit = getImmutableSuits().iterator();
+        Iterator<Suit> lowestSuit = getSortedSuits().iterator();
 
         SortedSet<Card> sorted = new TreeSet<>(original);
         for (Card card : sorted) {

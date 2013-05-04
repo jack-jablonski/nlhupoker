@@ -1,11 +1,11 @@
 package se.hupoker.cards.boardenumerator;
 
 import com.google.common.collect.ImmutableSortedSet;
-import se.hupoker.common.Street;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.Suit;
+import se.hupoker.common.Street;
 
-import java.util.*;
+import java.util.SortedSet;
 
 import static se.hupoker.common.Street.RIVER;
 
@@ -14,12 +14,6 @@ import static se.hupoker.common.Street.RIVER;
  * @author Alexander Nyberg
  */
 abstract class BoardTransformer {
-    private final SortedSet<Suit> immutableSuits;
-
-    protected BoardTransformer() {
-        immutableSuits = ImmutableSortedSet.copyOf(Suit.values());
-    }
-
     /**
      * Static factory according to (flop,turn) or river.
      *
@@ -34,8 +28,8 @@ abstract class BoardTransformer {
         }
     }
 
-    protected SortedSet<Suit> getImmutableSuits() {
-        return immutableSuits;
+    protected SortedSet<Suit> getSortedSuits() {
+        return ImmutableSortedSet.copyOf(Suit.allOf());
     }
 
     /**
@@ -43,5 +37,5 @@ abstract class BoardTransformer {
      * @param board
      * @return Isomorphic board.
      */
-    abstract CardSet getIsomorphicBoard(CardSet board);
+    abstract CardSet getIsomorphic(CardSet board);
 }

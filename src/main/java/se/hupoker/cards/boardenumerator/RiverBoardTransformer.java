@@ -20,7 +20,7 @@ class RiverBoardTransformer extends BoardTransformer {
     private final BoardTransformer flushTransform = new DrawBoardTransformer();
 
     @Override
-    public CardSet getIsomorphicBoard(CardSet board) {
+    public CardSet getIsomorphic(CardSet board) {
         EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);
 
         for (Card card : board) {
@@ -43,7 +43,7 @@ class RiverBoardTransformer extends BoardTransformer {
      * @return
      */
     private CardSet flushIsomorphic(CardSet board) {
-        return flushTransform.getIsomorphicBoard(board);
+        return flushTransform.getIsomorphic(board);
     }
 
     /**
@@ -54,7 +54,7 @@ class RiverBoardTransformer extends BoardTransformer {
      */
     private CardSet rainbowIsomorphic(CardSet board) {
         CardSet isomorphic = new CardSet(board.size());
-        Iterator<Suit> suitIterator = new CircularIterator<>(getImmutableSuits());
+        Iterator<Suit> suitIterator = new CircularIterator<>(getSortedSuits());
 
         SortedSet<Card> sorted = new TreeSet<>(board);
         for (Card card : sorted) {

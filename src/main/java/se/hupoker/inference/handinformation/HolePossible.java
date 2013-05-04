@@ -48,7 +48,6 @@ public class HolePossible implements Iterable<HoleCards> {
     }
 
     public HoleCards getUnique() {
-        checkState(numberOfPossible()==1, "Can only call when unique holecard");
         return Iterables.getOnlyElement(possible);
     }
 
