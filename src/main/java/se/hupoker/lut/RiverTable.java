@@ -35,6 +35,12 @@ public final class RiverTable extends LutTable {
         enumerateHole();
     }
 
+    public static RiverTable create(String source) {
+        RiverTable table = new RiverTable();
+        table.load(source);
+        return table;
+    }
+
     @Override
     protected int getIndex(LutKey in) {
         //debug(board.toString() + "|" + hole.toString());

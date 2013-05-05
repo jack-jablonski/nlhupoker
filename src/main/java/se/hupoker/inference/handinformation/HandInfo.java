@@ -11,14 +11,11 @@ import se.hupoker.common.StreetMap;
 import se.hupoker.handhistory.HeadsUp;
 import se.hupoker.handhistory.IllegalHandException;
 import se.hupoker.handhistory.Seated;
-import se.hupoker.inference.holebucket.HoleBucketMap;
-import se.hupoker.inference.holebucket.PreflopBucketMap;
 import se.hupoker.inference.states.PathBuilder;
 import se.hupoker.inference.states.PathHistory;
 
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -35,8 +32,6 @@ public class HandInfo {
 
     // Complete board for every street.
     private final StreetMap<CardSet> board = new StreetMap<>();
-    // Mapping from holecards to some bucket for each street
-    private final StreetMap<HoleBucketMap> bucket = new StreetMap<>();
     // The objective possible hands a player could hold (after hand is played out)
     private final PositionMap<HolePossible> holePossible = new PositionMap<>(HolePossible.class);
 //    private final PositionMap<HolePossible> holePossible = null;
@@ -64,7 +59,6 @@ public class HandInfo {
      */
     private void extract() throws IllegalHandException {
         initializeBoard();
-        initializeBuckets();
         initializeHolePossible();
 
         path = PathBuilder.createPath(getHand());
@@ -119,28 +113,8 @@ public class HandInfo {
         }
     }
 
-    private void initializeBuckets() {
-        bucket.put(Street.PREFLOP, new PreflopBucketMap());
-
-        Set<Street> streetsWithBoard = EnumSet.of(Street.FLOP, Street.TURN, Street.RIVER);
-        for (Street street : streetsWithBoard) {
-            CardSet streetCards = board.get(street);
-            if (streetCards != null) {
-                long before = System.currentTimeMillis();
-                HoleBucketMap bucketMap = HoleBucketMap.factory(street, streetCards);
-                bucket.put(street, bucketMap);
-                long after = System.currentTimeMillis();
-                System.out.println("HandCategory " + street + ":" + streetCards + " time:" + (after - before));
-            }
-        }
-    }
-
     public HolePossible getHolePossible(Position pos) {
         return holePossible.get(pos);
-    }
-
-    public HoleBucketMap getBucketMap(Street st) {
-        return bucket.get(st);
     }
 
     /**
@@ -182,5 +156,9 @@ public class HandInfo {
 
     public PathHistory getPath() {
         return path;
+    }
+
+    public CardSet getBoard(Street street) {
+        return board.get(street);
     }
 }

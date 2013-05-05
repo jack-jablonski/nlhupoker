@@ -9,8 +9,7 @@ import se.hupoker.inference.vectors.DoubleVector;
  *
  * @author Alexander Nyberg
  */
-class Gradient
-{
+class Gradient {
     private final DoubleVector vector = new DoubleVector(HoleCards.TexasCombinations);
 
     /**

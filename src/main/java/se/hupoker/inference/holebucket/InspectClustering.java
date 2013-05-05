@@ -15,40 +15,40 @@ public class InspectClustering {
     @Test
     public void inspectFlopClustering() {
         CardSet board = CardSet.from("2c7dKh");
-        HoleBucketMap bucketMap = new FlopBucketMap(board);
-
-        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
-        printClustering(multiMap, board);
+//        HoleBucketMap bucketMap = new FlopBucketMap(board);
+//
+//        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
+//        printClustering(multiMap, board);
     }
 
     @Test
     public void inspectTurnClustering() {
         CardSet board = CardSet.from("2c7dKhKd");
-        HoleBucketMap bucketMap = new TurnBucketMap(board);
-
-        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
-        printClustering(multiMap, board);
+//        HoleBucketMap bucketMap = new TurnBucketMap(board);
+//
+//        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
+//        printClustering(multiMap, board);
     }
 
     @Test
     public void inspectRiverClustering() {
         CardSet board = CardSet.from("2c4c7dKhAd");
-        HoleBucketMap bucketMap = new RiverBucketMap(board);
-
-        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
-        printClustering(multiMap, board);
+//        HoleBucketMap bucketMap = new RiverBucketMap(board);
+//
+//        ArrayListMultimap<Integer, HoleCards> multiMap = findClustering(board, bucketMap);
+//        printClustering(multiMap, board);
     }
 
-    private ArrayListMultimap<Integer, HoleCards> findClustering(CardSet board, HoleBucketMap bucketMap) {
+    private ArrayListMultimap<Integer, HoleCards> findClustering(CardSet board) {
         ArrayListMultimap<Integer, HoleCards> multiMap = ArrayListMultimap.create();
-        for (HoleCards hole : HoleCards.allOf()) {
+        /*for (HoleCards hole : HoleCards.allOf()) {
             if (board.containsAny(hole)) {
                 continue;
             }
 
             int bucketIndex = bucketMap.get(hole);
             multiMap.put(bucketIndex, hole);
-        }
+        }*/
         return multiMap;
     }
 

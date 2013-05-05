@@ -1,5 +1,6 @@
 package se.hupoker.inference.tree;
 
+import se.hupoker.cards.CardSet;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.Position;
@@ -7,7 +8,6 @@ import se.hupoker.common.PositionMap;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
-import se.hupoker.inference.holebucket.HoleBucketMap;
 import se.hupoker.inference.vectors.HoleDistribution;
 
 /**
@@ -52,7 +52,7 @@ class HandLikelihood implements PathEvaluator {
      * @return Probability of act in this node.
      */
     private double findActionProbability(StateNode state, HandInfo hand, HoleDistribution hd, PathElement elem) {
-        final HoleBucketMap bucketMap = hand.getBucketMap(elem.getStreet());
+        CardSet board = hand.getBoard(elem.getStreet());
         double sum = 0;
 
 		/*
@@ -60,7 +60,7 @@ class HandLikelihood implements PathEvaluator {
 		 */
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution dist = state.getDistribution(bucketMap, hole);
+            ActionDistribution dist = state.getDistribution(board, hole);
 
             double cardprob = hd.get(hole.ordinal()) * dist.getProbability(elem.getAction());
             sum += cardprob;
@@ -76,11 +76,11 @@ class HandLikelihood implements PathEvaluator {
      * @param elem
      */
     private void updateHoleDistribution(StateNode state, HandInfo hand, HoleDistribution hd, PathElement elem) {
-        final HoleBucketMap bucketMap = hand.getBucketMap(elem.getStreet());
+        CardSet board = hand.getBoard(elem.getStreet());
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution dist = state.getDistribution(bucketMap, hole);
+            ActionDistribution dist = state.getDistribution(board, hole);
 
             /**
              *

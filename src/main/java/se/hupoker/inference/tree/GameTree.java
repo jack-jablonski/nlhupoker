@@ -106,7 +106,7 @@ public class GameTree {
             @Override
             public void run(StateNode node) {
                 node.logDerivatives();
-                for (ActionDistribution ad : node.getHoleCluster()) {
+                for (ActionDistribution ad : node.getHoleClusterer()) {
                     ad.adjustAndClearDerivatives();
                 }
                 node.logProbablities();

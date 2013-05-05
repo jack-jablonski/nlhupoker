@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * @author Alexander Nyberg
  */
-public interface StateGetter {
+public interface StateRepository {
 
     public Collection<GenericState> getPreflop();
 

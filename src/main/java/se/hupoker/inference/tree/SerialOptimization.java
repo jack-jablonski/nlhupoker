@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  * @author Alexander Nyberg
  */
-public class SerialOptimization implements OptimizationInterface {
+public class SerialOptimization implements TreeOptimizer {
     private final GameTree tree;
 
     public SerialOptimization(GameTree tree) {

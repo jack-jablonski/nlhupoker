@@ -1,12 +1,12 @@
 package se.hupoker.inference.tree;
 
+import se.hupoker.cards.CardSet;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.PositionMap;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
-import se.hupoker.inference.holebucket.HoleBucketMap;
 
 /**
  * Update the action distributions according to the gradient.
@@ -22,12 +22,12 @@ class CalculateGradient implements PathEvaluator {
 
     @Override
     public void evaluateAtNode(StateNode node, HandInfo hand, PathElement elem) {
-        final HoleBucketMap bucketMap = hand.getBucketMap(elem.getStreet());
+        CardSet board = hand.getBoard(elem.getStreet());
         Gradient grad = gradients.get(elem.getPosition());
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution actionDist = node.getDistribution(bucketMap, hole);
+            ActionDistribution actionDist = node.getDistribution(board, hole);
 
 			/**
 			 * Core update

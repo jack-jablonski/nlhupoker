@@ -36,6 +36,12 @@ final public class TurnTable extends LutTable {
 		enumerateHole();
 	}
 
+    public static TurnTable create(String source) {
+        TurnTable table = new TurnTable();
+        table.load(source);
+        return table;
+    }
+
 	@Override
 	protected int getIndex(LutKey in) {
 		return tableIndex(in.getRanks(), in.getSuits());

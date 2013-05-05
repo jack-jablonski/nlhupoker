@@ -7,7 +7,7 @@ import java.util.Collection;
 /**
  * @author Alexander Nyberg
  */
-public interface OptimizationInterface {
+public interface TreeOptimizer {
     /**
      * Update gradients over given list.
      *

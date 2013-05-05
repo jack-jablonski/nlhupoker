@@ -1,5 +1,6 @@
 package se.hupoker.inference.tree;
 
+import se.hupoker.cards.CardSet;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.Position;
@@ -7,7 +8,6 @@ import se.hupoker.common.PositionMap;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
-import se.hupoker.inference.holebucket.HoleBucketMap;
 
 /**
  * @author Alexander Nyberg
@@ -36,12 +36,12 @@ class BuildGradient implements PathEvaluator {
      */
     @Override
     public void evaluateAtNode(StateNode node, HandInfo hand, PathElement elem) {
-        HoleBucketMap bucketMap = hand.getBucketMap(elem.getStreet());
         Gradient grad = gradients.get(elem.getPosition());
+        CardSet board = hand.getBoard(elem.getStreet());
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution actionDist = node.getDistribution(bucketMap, hole);
+            ActionDistribution actionDist = node.getDistribution(board, hole);
 
             /**
              * Core update

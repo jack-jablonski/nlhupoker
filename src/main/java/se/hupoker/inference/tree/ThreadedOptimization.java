@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
  *
  * @author Alexander Nyberg
  */
-public class ThreadedOptimization implements OptimizationInterface {
+public class ThreadedOptimization implements TreeOptimizer {
     private ExecutorService executor = Executors.newFixedThreadPool(Computation.units(), new LowPriorityFactory());
     private final GameTree tree;
 

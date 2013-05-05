@@ -5,7 +5,7 @@ import se.hupoker.inference.actiondistribution.ActionDistribution;
 import java.util.ArrayList;
 
 /**
- * TODO: Should be Map<Identifier, ActionDistribution>
+ * TODO: Should be Map<"Identifier", ActionDistribution>
  *
  * @author Alexander Nyberg
  */

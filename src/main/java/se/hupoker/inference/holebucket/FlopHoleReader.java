@@ -1,53 +1,40 @@
 package se.hupoker.inference.holebucket;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
-import se.hupoker.inference.actiondistribution.ActionDistribution;
-import se.hupoker.inference.actiondistribution.ActionDistOptions;
+import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.inference.actiondistribution.ActionDistOptions;
+import se.hupoker.inference.actiondistribution.ActionDistribution;
+import se.hupoker.inference.states.GenericState;
 import se.hupoker.lut.FlopTable;
 import se.hupoker.lut.LutKey;
-import se.hupoker.lut.LutPath;
-import se.hupoker.inference.states.GenericState;
-import se.hupoker.cards.CardSet;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * 
  * @author Alexander Nyberg
   */
-class FlopHoleReader implements HoleReader {
-	private static final FlopHoleReader single = new FlopHoleReader();
+public class FlopHoleReader implements HoleClusterer {
+	private final List<FlopCluster> flopClusters;
+	private final FlopTable hsTable;
+	private final FlopTable ppotTable;
+	private final FlopTable npotTable;
 
-	private final List<FlopStructure> tupleList = new ArrayList<>();
-	private final FlopTable hsTable = new FlopTable();
-	private final FlopTable ppotTable = new FlopTable();
-	private final FlopTable npotTable = new FlopTable();
-
-	private FlopHoleReader() {
-		System.out.println("FlopHoleReader loading");
-
-		hsTable.load(LutPath.getFlopHs());
-		ppotTable.load(LutPath.getFlopPpot());
-		npotTable.load(LutPath.getFlopNpot());
-
-		initialize();
-	}
-
-	public static FlopHoleReader getInstance() {
-		return single;
+	public FlopHoleReader(List<FlopCluster> flopClusters, FlopTable hsTable, FlopTable ppotTable, FlopTable npotTable) {
+		this.flopClusters = flopClusters;
+        this.hsTable = hsTable;
+        this.ppotTable = ppotTable;
+        this.npotTable = npotTable;
 	}
 
     @Override
-	public HoleCluster getBucketMap(GenericState descriptor) {
+	public HoleCluster getHoleClusters(GenericState descriptor) {
 		HoleCluster bm = new HoleCluster();
 
-		for (FlopStructure tuple : tupleList) {
+		for (FlopCluster tuple : flopClusters) {
 			EnumSet<ActionDistOptions> options = ActionDistOptions.empty();
 
 			ActionDistribution ad = ActionDistribution.from(descriptor.getBetting(), tuple.toString(), options);
@@ -58,18 +45,29 @@ class FlopHoleReader implements HoleReader {
 		return bm;
 	}
 
-	/**
-	 * Closest bucket in HoleTuple terms.
-	 * 
+    @Override
+    public int getHoleClusterIndex(CardSet board, HoleCards hole) {
+        checkArgument(board.size() == 3);
+        final LutKey key = new LutKey(board, hole);
+        float hs = hsTable.lookupOne(key);
+        float ppot = ppotTable.lookupOne(key);
+        float npot = npotTable.lookupOne(key);
+
+        HoleTuple tp = new HoleTuple(hs, ppot, npot);
+
+        return getClosest(tp);
+    }
+
+    /**
 	 * @param otherTuple
-	 * @return
+	 * @return Closest bucket in HoleTuple terms.
 	 */
 	private int getClosest(HoleTuple otherTuple) {
 		int minIndex = 0;
 		double minDistance = Double.MAX_VALUE;
 
-		for (int i=0; i < tupleList.size(); i++) {
-			HoleTuple tuple = tupleList.get(i);
+		for (int i=0; i < flopClusters.size(); i++) {
+			HoleTuple tuple = flopClusters.get(i);
 
 			double dist = otherTuple.getDistance(tuple);
 			if (dist < minDistance) {
@@ -79,49 +77,5 @@ class FlopHoleReader implements HoleReader {
 		}
 
 		return minIndex;
-	}
-
-	/**
-	 * 
-	 * @param board
-	 * @param hole
-	 * @return Index into 
-	 */
-	public int getBucketIndex(CardSet board, HoleCards hole) {
-        final LutKey key = new LutKey(board, hole);
-        float hs = hsTable.lookupOne(key);
-        float ppot = ppotTable.lookupOne(key);
-        float npot = npotTable.lookupOne(key);
-
-		HoleTuple tp = new HoleTuple(hs, ppot, npot);
-//        System.out.println("Tuple: (" + tp + ")");
-
-		return getClosest(tp);
-	}
-
-	// TODO: use 
-	public static class FlopStructure extends HoleTuple implements StreetStructure {
-		public HandStrength strength = HandStrength.NONE;
-	}
-
-	/**
-	 * Load from file.
-	 */
-	private void initialize() {
-		try {
-			YamlReader reader = new YamlReader(new FileReader(HolePath.getFlopPath()));
-
-			while (true) {
-				FlopStructure tuple = reader.read(FlopStructure.class);
-				if (tuple == null) {
-					break;
-				}
-
-				tupleList.add(tuple);
-			}
-		} catch (YamlException|FileNotFoundException e) {
-			e.printStackTrace();
-			throw new IllegalArgumentException("Could not load.");
-		}
 	}
 }

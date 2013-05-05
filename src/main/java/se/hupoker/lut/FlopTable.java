@@ -57,6 +57,12 @@ final public class FlopTable extends LutTable {
         enumerateHole();
     }
 
+    public static FlopTable create(String source) {
+        FlopTable table = new FlopTable();
+        table.load(source);
+        return table;
+    }
+
     /**
      * @param lutKey
      * @return The final index into LUT.

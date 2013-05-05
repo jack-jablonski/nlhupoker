@@ -1,17 +1,15 @@
 package se.hupoker.inference.tree;
 
+import se.hupoker.cards.CardSet;
 import se.hupoker.common.Predicates;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.holebucket.HoleCluster;
+import se.hupoker.inference.holebucket.HoleClusterer;
 import se.hupoker.inference.states.PathElement;
-import se.hupoker.inference.holebucket.HoleBucketMap;
 import se.hupoker.inference.states.GenericState;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -36,16 +34,17 @@ public class StateNode {
     /*
      * Holds action distributions for all hole card buckets.
      */
-    private final HoleCluster holeCluster;
+    private final HoleClusterer holeClusterer;
+    private final HoleCluster holeClusters;
     private final PrintWriter writer;
 
-
-    protected StateNode(GenericState state, HoleCluster holeCluster, PrintWriter writer) {
+    protected StateNode(GenericState state, HoleClusterer holeClusterer, PrintWriter writer) {
         // TODO: Should clone, since GenericState mutable b/c yamlbeans
         this.center = state;
-        this.holeCluster = holeCluster;
+        this.holeClusterer = holeClusterer;
         this.writer = writer;
 
+        this.holeClusters = holeClusterer.getHoleClusters(state);
     }
 
     protected void setChildLink(StreetStateSet childLevel) {
@@ -54,14 +53,16 @@ public class StateNode {
     }
 
     /**
+     * TODO: Should be f: Board -> Map<HoleCards, ActionDistribution>
      *
-     * @param holeBucketMap
+     * @param board
      * @param hole
-     * @return The distribution of actions in the holeBucketMap.
+     * @return The distribution of actions.
      */
-    protected ActionDistribution getDistribution(HoleBucketMap holeBucketMap, HoleCards hole) {
-        int bucketIndex = holeBucketMap.get(hole);
-        return getHoleCluster().get(bucketIndex);
+    protected ActionDistribution getDistribution(CardSet board, HoleCards hole) {
+        int index = holeClusterer.getHoleClusterIndex(board, hole);
+
+        return holeClusters.get(index);
     }
 
     protected boolean isCompareable(PathElement elem) {
@@ -93,7 +94,7 @@ public class StateNode {
      * @param element The visit.
      */
     protected void addVisit(HandInfo hand, PathElement element) {
-//        final HoleBucketMap holeCluster = hand.getHoleCluster(getCenter().getStreet());
+//        final HoleBucketMap holeClusterer = hand.getHoleClusterer(getCenter().getStreet());
 //        HolePossible hp = hand.getHolePossible(element.getPosition());
 
 		/*
@@ -102,7 +103,7 @@ public class StateNode {
 /*
         if (hp.numberOfPossible() == 1) {
             HoleCards unique = hp.getUnique();
-            int bucketIndex = holeCluster.get(unique);
+            int bucketIndex = holeClusterer.get(unique);
             int actionIndex = BetFactory.getIndex(center.getActiontype(), he.getAction());
             holeVisit[bucketIndex][actionIndex]++;
         }
@@ -115,7 +116,7 @@ public class StateNode {
     protected void logDerivatives() {
         writer.println("=== Derivatives ===");
 
-        for (ActionDistribution ad : getHoleCluster()) {
+        for (ActionDistribution ad : getHoleClusterer()) {
             writer.println(ad.derivativeString() + "{" + ad.toString() + "}");
         }
 
@@ -125,7 +126,7 @@ public class StateNode {
     protected void logProbablities() {
         writer.println("=== Probabilities ===");
 
-        for (ActionDistribution ad : getHoleCluster()) {
+        for (ActionDistribution ad : getHoleClusterer()) {
             writer.println(ad.probString() + "{" + ad.toString() + "}");
         }
 
@@ -153,8 +154,8 @@ public class StateNode {
     }
 
     private void printBucketStatistics() {
-        for (int i = 0; i < getHoleCluster().size(); i++) {
-            ActionDistribution ad = getHoleCluster().get(i);
+        for (int i = 0; i < getHoleClusterer().size(); i++) {
+            ActionDistribution ad = getHoleClusterer().get(i);
 
 //            System.out.print(Arrays.toString(getHoleVisit()[i]) + " ");
             System.out.println(ad.probString() + "{" + ad.toString() + "}");
@@ -170,8 +171,8 @@ public class StateNode {
         return center;
     }
 
-    public HoleCluster getHoleCluster() {
-        return holeCluster;
+    public HoleCluster getHoleClusterer() {
+        return holeClusters;
     }
 
     public StreetStateSet getChild() {

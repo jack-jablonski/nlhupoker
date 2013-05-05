@@ -12,9 +12,7 @@ public class HoleTuple {
     private double ppot;
     private double npot;
 
-    /**
-     * Required for yamlbeans.
-     */
+     // Required because of yamlbeans.
     public HoleTuple() {
     }
 
