@@ -6,6 +6,7 @@ import se.hupoker.inference.holebucket.HoleCluster;
 import se.hupoker.inference.states.GenericState;
 import se.hupoker.inference.states.PostflopStateReader;
 import se.hupoker.inference.states.PreflopStateReader;
+import se.hupoker.inference.states.StateConfigurationPath;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,9 +18,9 @@ import java.util.Collection;
  * @author Alexander Nyberg
  */
 public class StateSetFactory {
-    private static StreetStateSet preflopFactory() {
+    private static StreetStateSet preflopFactory(StateConfigurationPath configuration) {
         StreetStateSet preflop = new StreetStateSet(Street.PREFLOP);
-        Collection<GenericState> prefFopStates = PreflopStateReader.getStates();
+        Collection<GenericState> prefFopStates = PreflopStateReader.getStates(configuration);
 
         for (GenericState state : prefFopStates) {
             HoleCluster bucket = BucketFactory.factory(state);
@@ -31,9 +32,9 @@ public class StateSetFactory {
         return preflop;
     }
 
-    private static StreetStateSet postFactory(Street street) {
+    private static StreetStateSet postFactory(Street street, StateConfigurationPath configuration) {
         StreetStateSet post = new StreetStateSet(street);
-        Collection<GenericState> postFlopStates = PostflopStateReader.getStates(street);
+        Collection<GenericState> postFlopStates = PostflopStateReader.getStates(street, configuration);
 
         for (GenericState state : postFlopStates) {
             HoleCluster bucket = BucketFactory.factory(state);
@@ -62,22 +63,22 @@ public class StateSetFactory {
      * @param street
      * @param stateSet
      */
-    public static void createChildLinks(Street street, StreetStateSet stateSet) {
+    public static void createChildLinks(Street street, StreetStateSet stateSet, StateConfigurationPath configuration) {
         for (StateNode node : stateSet) {
             if (node.getCenter().hasChild()) {
                 final Street nextStreet = street.next();
-                StreetStateSet nextStateSet = postFactory(nextStreet);
+                StreetStateSet nextStateSet = postFactory(nextStreet, configuration);
 
                 node.setChildLink(nextStateSet);
-                createChildLinks(nextStreet, nextStateSet);
+                createChildLinks(nextStreet, nextStateSet, configuration);
             }
         }
     }
 
-    public static StreetStateSet factory() {
-        StreetStateSet stateSet = preflopFactory();
+    public static StreetStateSet factory(StateConfigurationPath configuration) {
+        StreetStateSet stateSet = preflopFactory(configuration);
 
-        createChildLinks(Street.PREFLOP, stateSet);
+        createChildLinks(Street.PREFLOP, stateSet, configuration);
 
         return stateSet;
     }

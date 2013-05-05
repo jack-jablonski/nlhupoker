@@ -4,7 +4,6 @@ package se.hupoker.inference;
  * @author Alexander Nyberg
  */
 public class BetPathDescription {
-    // TODO name ipTocall, oopTocall
     private double ipTocall, oopTocall;
 
     // For yamlbeans

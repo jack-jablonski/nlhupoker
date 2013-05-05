@@ -16,11 +16,11 @@ public class PreflopStateReader {
     private final Collection<GenericState> states = new LinkedList<>();
     private PreflopStateReader() {}
 
-    public static Collection<GenericState> getStates() {
+    public static Collection<GenericState> getStates(StateConfigurationPath configuration) {
         System.out.println("PreflopStateReader loading");
         PreflopStateReader preflopStateReader = new PreflopStateReader();
 
-        preflopStateReader.initialize();
+        preflopStateReader.initialize(configuration);
 
         return preflopStateReader.states;
     }
@@ -30,10 +30,10 @@ public class PreflopStateReader {
         states.add(state);
     }
 
-    private void initialize() {
+    private void initialize(StateConfigurationPath configuration) {
         try {
 //			YamlReader reader = new YamlReader(StatePath.getPreflop());
-            YamlReader reader = new YamlReader(new FileReader(StatePath.getPreflopPath()));
+            YamlReader reader = new YamlReader(new FileReader(configuration.preflop()));
 
             while (true) {
                 GenericState state = reader.read(GenericState.class);

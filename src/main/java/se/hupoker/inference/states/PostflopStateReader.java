@@ -20,10 +20,10 @@ public class PostflopStateReader {
         street = st;
     }
 
-    public static Collection<GenericState> getStates(Street st) {
+    public static Collection<GenericState> getStates(Street st, StateConfigurationPath configuration) {
         PostflopStateReader postflopStateReader = new PostflopStateReader(st);
 
-        postflopStateReader.initialize();
+        postflopStateReader.initialize(configuration);
         return postflopStateReader.states;
     }
 
@@ -32,10 +32,10 @@ public class PostflopStateReader {
         states.add(state);
     }
 
-    private void initialize() {
+    private void initialize(StateConfigurationPath configuration) {
         try {
 //			YamlReader reader = new YamlReader(StatePath.getPostFlop());
-            YamlReader reader = new YamlReader(new FileReader(StatePath.getPostFlopPath()));
+            YamlReader reader = new YamlReader(new FileReader(configuration.postflop()));
 
             while (true) {
                 GenericState state = reader.read(GenericState.class);
