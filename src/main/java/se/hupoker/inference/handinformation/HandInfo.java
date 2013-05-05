@@ -2,9 +2,7 @@ package se.hupoker.inference.handinformation;
 
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Lists;
-import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.Position;
@@ -17,10 +15,7 @@ import se.hupoker.handhistory.Seated;
 import se.hupoker.inference.states.PathBuilder;
 import se.hupoker.inference.states.PathHistory;
 
-import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -47,8 +42,8 @@ public class HandInfo {
      * Create & initialize from HeadsUp
      *
      * @param hand
-     * @return
-     * @throws IllegalHandException Erroneous hand.
+     * @return Another view of 'hand'
+     * @throws IllegalHandException if erroneous hand.
      */
     public static HandInfo factory(HeadsUp hand) throws IllegalHandException {
         PathHistory handPath = PathBuilder.createPath(hand);
@@ -78,7 +73,7 @@ public class HandInfo {
             if (shown != null) {
 				 // HolePossible should contain a single point.
                 HolePossible hp = holePossible.get(pos);
-                hp.setKnownHole(shown);
+                hp.setKnown(shown);
             }
         }
 

@@ -3,9 +3,9 @@ package se.hupoker.inference.actiondistribution;
 import se.hupoker.inference.vectors.Distribution;
 
 /**
- * 
- * @author Alexander Nyberg
+ * For describing a probability distribution over "to call range" which is 0...0,5
  *
+ * @author Alexander Nyberg
  */
 public class SizeDistribution extends Distribution {
 	private static final int NUMBUCKETS = 5;

@@ -43,7 +43,7 @@ abstract public class ActionDistribution {
      */
 	private final EnumSet<ActionDistOptions> optionSet;
 	private final Distribution probability;
-	private final DoubleVector deriv;
+	private final DoubleVector gradient;
 	private final String description;
 
 	protected ActionDistribution(String desc, EnumSet<ActionDistOptions> options) {
@@ -51,7 +51,7 @@ abstract public class ActionDistribution {
 		optionSet = options;
 
 		probability = new Distribution(getNumberOfActions());
-		deriv = new DoubleVector(getNumberOfActions());
+		gradient = new DoubleVector(getNumberOfActions());
 
 		if (options.contains(ActionDistOptions.NOFOLD)) {
 			probability.set(0, 0.0);
@@ -61,7 +61,7 @@ abstract public class ActionDistribution {
 
 	public synchronized void addDerivative(Action act, double adder) {
 		int index = getActionIndex(act);
-		deriv.add(index, adder);
+		gradient.add(index, adder);
 	}
 
 	/*
@@ -78,11 +78,11 @@ abstract public class ActionDistribution {
 	 */
 	private double getMaxBoundaryStep(DoubleVector var, DoubleVector updates) {
 		assert var.size() == updates.size();
-        assert deriv.size() == probability.size();
+        assert gradient.size() == probability.size();
 		double maxStep = Double.MAX_VALUE;
 
-		for (int i=0; i < deriv.size(); i++) {
-			double g = deriv.get(i);
+		for (int i=0; i < gradient.size(); i++) {
+			double g = gradient.get(i);
 
 			double borderStep;
 			if (g < 0) {
@@ -103,36 +103,36 @@ abstract public class ActionDistribution {
 	public synchronized void adjustAndClearDerivatives() {
 		final double LAMBDA = 0.1;
 
-		deriv.assertNonNegative();
+		gradient.assertNonNegative();
 
 		int numActive = probability.size();
 		if (optionSet.contains(ActionDistOptions.NOFOLD)) {
-			deriv.set(0, 0.0);
+			gradient.set(0, 0.0);
 			numActive--;
 		}
 
 		/*
 		 * Adjust.
 		 */
-		double derivSum = deriv.getSum();
+		double derivSum = gradient.getSum();
 		if (derivSum > 0) {
-			deriv.divideAll(derivSum);
+			gradient.divideAll(derivSum);
 
             final double normalizer = (double) 1 / numActive;
-            deriv.minusAll(normalizer);
+            gradient.minusAll(normalizer);
 			if (optionSet.contains(ActionDistOptions.NOFOLD)) {
-				deriv.set(0, 0.0);
+				gradient.set(0, 0.0);
 			}
 
-			double boundaryStep = getMaxBoundaryStep(probability, deriv);
+			double boundaryStep = getMaxBoundaryStep(probability, gradient);
 			double step = Math.min(LAMBDA, boundaryStep);
 
-			deriv.multiplyAll(step);
+			gradient.multiplyAll(step);
 
 			/*
 			 * Add back to getProbability.
 			 */
-			probability.addAll(deriv);
+			probability.addAll(gradient);
 		}
 
 		probability.assertValues();
@@ -140,7 +140,7 @@ abstract public class ActionDistribution {
 		/*
 		 * Clear derivatives.
 		 */
-		deriv.setAll(0.0);
+		gradient.setAll(0.0);
 	}
 
 	public synchronized double getProbability(Action act) {
@@ -152,7 +152,7 @@ abstract public class ActionDistribution {
 	}
 
 	public synchronized String derivativeString() {
-		return deriv.toString();
+		return gradient.toString();
 	}
 	
 	@Override

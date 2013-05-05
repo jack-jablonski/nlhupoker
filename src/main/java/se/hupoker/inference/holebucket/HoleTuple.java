@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
  *
  * @author Alexander Nyberg
  */
-public class HoleTuple {
+class HoleTuple {
     private double hs;
     private double ppot;
     private double npot;

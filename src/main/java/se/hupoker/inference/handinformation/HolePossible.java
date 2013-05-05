@@ -55,7 +55,7 @@ public class HolePossible implements Iterable<HoleCards> {
      *
      * @param hole We know for sure these are the cards!
      */
-	public void setKnownHole(HoleCards hole) {
+	public void setKnown(HoleCards hole) {
 		possible.clear();
         possible.add(hole);
 	}
