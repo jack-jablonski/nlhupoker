@@ -8,7 +8,7 @@ import se.hupoker.inference.states.PathHistory;
  *
  * @author Alexander Nyberg
  */
-public class HandDerivatives implements Runnable {
+class HandDerivatives implements Runnable {
     private final HandInfo handInfo;
     private final GameTree tree;
 

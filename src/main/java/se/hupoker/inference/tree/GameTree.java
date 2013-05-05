@@ -120,7 +120,7 @@ public class GameTree {
      * @return Log likelihood of seeing this action sequence.
      */
     private double handLikelihood(HandInfo hand) {
-        HandLikelihood hd = new HandLikelihood(hand);
+        HandLikelihood hd = HandLikelihood.create(hand);
 
         walkNodeTreePath(hand, hand.getPath(), hd);
 

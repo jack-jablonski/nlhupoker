@@ -18,24 +18,23 @@ import se.hupoker.inference.vectors.HoleDistribution;
  *
  */
 class HandLikelihood implements PathEvaluator {
-	private final HandInfo hand;
 	private final PositionMap<HoleDistribution> playerDistribution;
 	private double handProbability = 0;
 
-    public double getHandProbability() {
-        return handProbability;
-    }
-
-	public HandLikelihood(HandInfo hand)  {
-		this.hand = hand;
-		playerDistribution = initialDistribution();
+	private HandLikelihood(HandInfo hand, PositionMap<HoleDistribution> playerDistribution)  {
+		this.playerDistribution = playerDistribution;
 	}
 
-	/**
-	 * 
+    public static HandLikelihood create(HandInfo hand) {
+        PositionMap<HoleDistribution> distribution = initialDistribution(hand);
+        return new HandLikelihood(hand, distribution);
+    }
+
+    /**
+	 *
 	 * @return
 	 */
-	private PositionMap<HoleDistribution> initialDistribution() {
+	private static PositionMap<HoleDistribution> initialDistribution(HandInfo hand) {
 		PositionMap<HoleDistribution> dist = new PositionMap<>();
 
 		for (Position pos : Position.values()) {
@@ -45,6 +44,10 @@ class HandLikelihood implements PathEvaluator {
 
 		return dist;
 	}
+
+    public double getHandProbability() {
+        return handProbability;
+    }
 
     /**
      * @param hand

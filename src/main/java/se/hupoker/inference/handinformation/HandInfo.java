@@ -1,6 +1,9 @@
 package se.hupoker.inference.handinformation;
 
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Lists;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
@@ -16,6 +19,7 @@ import se.hupoker.inference.states.PathHistory;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -27,90 +31,69 @@ import static com.google.common.base.Preconditions.checkState;
  * @author Alexander Nyberg
  */
 public class HandInfo {
-    private final HeadsUp hand;
-    private PathHistory path;
-
+    private final PathHistory path;
     // Complete board for every street.
-    private final StreetMap<CardSet> board = new StreetMap<>();
+    private final StreetMap<CardSet> board;
     // The objective possible hands a player could hold (after hand is played out)
-    private final PositionMap<HolePossible> holePossible = new PositionMap<>(HolePossible.class);
-//    private final PositionMap<HolePossible> holePossible = null;
+    private final PositionMap<HolePossible> holePossible;
+
+    private HandInfo(PathHistory path, StreetMap<CardSet> board, PositionMap<HolePossible> holePossible) {
+        this.path = path;
+        this.board = board;
+        this.holePossible = holePossible;
+    }
 
     /**
      * Create & initialize from HeadsUp
      *
-     * @param hs
+     * @param hand
      * @return
      * @throws IllegalHandException Erroneous hand.
      */
-    public static HandInfo factory(HeadsUp hs) throws IllegalHandException {
-        HandInfo info = new HandInfo(hs);
-        info.extract();
+    public static HandInfo factory(HeadsUp hand) throws IllegalHandException {
+        PathHistory handPath = PathBuilder.createPath(hand);
+        StreetMap<CardSet> completeBoard = initializeBoard(hand.getBoard());
 
-        return info;
-    }
+        CardSet lastCompleteBoard = getLastCompleteBoard(completeBoard);
+        PositionMap<HolePossible> holePossible = initializeHolePossible(hand, lastCompleteBoard);
 
-    private HandInfo(HeadsUp hand) {
-        this.hand = hand;
-    }
-
-    /**
-     * @throws IllegalHandException Something erroneous with hand.
-     */
-    private void extract() throws IllegalHandException {
-        initializeBoard();
-        initializeHolePossible();
-
-        path = PathBuilder.createPath(getHand());
+        return new HandInfo(handPath, completeBoard, holePossible);
     }
 
     /**
-     * TODO: Remove known
+     * TODO: Remove known, preferably in separate factory.
      * Remove all known board cards from holepossible
      */
-    private void initializeHolePossible() {
-        CardSet completeBoard = getCompleteBoard();
+    private static PositionMap<HolePossible> initializeHolePossible(HeadsUp hand, CardSet lastCompleteBoard) {
+        PositionMap<HolePossible> holePossible = new PositionMap<>(HolePossible.class);
 
         for (HolePossible hp : holePossible.values()) {
-            hp.remove(completeBoard);
-
-            if (completeBoard.size() == 0) {
-                checkState(hp.numberOfPossible() == 1326);
-            } else if (completeBoard.size() == 3) {
-                checkState(hp.numberOfPossible() == 1176);
-            } else if (completeBoard.size() == 4) {
-                checkState(hp.numberOfPossible() == 1128);
-            } else if (completeBoard.size() == 5) {
-                checkState(hp.numberOfPossible() == 1081);
-            } else {
-                throw new IllegalStateException();
-            }
+            hp.remove(lastCompleteBoard);
         }
 
         for (Position pos : Position.values()) {
-            Seated player = getHand().getSeated(pos);
+            Seated player = hand.getSeated(pos);
 
             HoleCards shown = player.getHand();
             if (shown != null) {
-                /*
-				 * HolePossible should contain a single point now.
-				 */
-                HolePossible hp = getHolePossible(pos);
+				 // HolePossible should contain a single point.
+                HolePossible hp = holePossible.get(pos);
                 hp.setKnownHole(shown);
             }
         }
+
+        return holePossible;
     }
 
-    private CardSet getCompleteBoard() {
-        if (board.containsKey(Street.RIVER)) {
-            return board.get(Street.RIVER);
-        } else if (board.containsKey(Street.TURN)) {
-            return board.get(Street.TURN);
-        } else if (board.containsKey(Street.FLOP)) {
-            return board.get(Street.FLOP);
-        } else {
-            return new CardSet();
+    private static CardSet getLastCompleteBoard(StreetMap<CardSet> completeBoard) {
+        List<Street> streetsWithBoard = Lists.newArrayList(Street.RIVER, Street.TURN, Street.FLOP);
+
+        for (Street street : streetsWithBoard) {
+            if (completeBoard.containsKey(street)) {
+                return completeBoard.get(street);
+            }
         }
+        return new CardSet();
     }
 
     public HolePossible getHolePossible(Position pos) {
@@ -118,40 +101,27 @@ public class HandInfo {
     }
 
     /**
-     * @param street
-     * @param previous Board from previous street. Don't modify!
-     * @return Complete board belonging to street.
-     */
-    private CardSet setBoard(Street street, Set<Card> previous, CardSet newCards) {
-        CardSet fullBoardCards = new CardSet();
-
-        fullBoardCards.addAll(previous);
-        fullBoardCards.addAll(newCards);
-
-        board.put(street, fullBoardCards);
-
-        return fullBoardCards;
-    }
-
-    /**
      * For each street set the complete board.
      */
-    private void initializeBoard() {
-        Set<Street> streetsWithBoard = EnumSet.of(Street.FLOP, Street.TURN, Street.RIVER);
-        CardSet cards = new CardSet();
+    private static StreetMap<CardSet> initializeBoard(StreetMap<CardSet> perStreet) {
+        List<Street> streetsWithBoard = Lists.newArrayList(Street.FLOP, Street.TURN, Street.RIVER);
+        StreetMap<CardSet> completeBoard = new StreetMap<>();
+        CardSet currentComplete = new CardSet();
 
-        for (Street st : streetsWithBoard) {
-            if (getHand().hasBoard(st)) {
-                CardSet streetCards = getHand().getBoard(st);
-                Set<Card> immutableCards = Collections.unmodifiableSet(cards);
-
-                cards = setBoard(st, immutableCards, streetCards);
+        for (Street street : streetsWithBoard) {
+            if (!perStreet.containsKey(street)) {
+                break;
             }
-        }
-    }
 
-    public HeadsUp getHand() {
-        return hand;
+            CardSet currentStreet = perStreet.get(street);
+            currentComplete.addAll(currentStreet);
+
+            // Copy & insert into Map
+            CardSet insertionSet = new CardSet(ImmutableList.copyOf(currentComplete));
+            completeBoard.put(street, insertionSet);
+        }
+
+        return completeBoard;
     }
 
     public PathHistory getPath() {

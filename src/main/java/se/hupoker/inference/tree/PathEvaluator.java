@@ -7,7 +7,7 @@ import se.hupoker.inference.states.PathElement;
  *
  * @author Alexander Nyberg
  */
-public interface PathEvaluator {
+interface PathEvaluator {
     /**
      * @param hand
      * @param elem

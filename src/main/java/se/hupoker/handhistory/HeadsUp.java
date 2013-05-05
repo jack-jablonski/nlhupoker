@@ -164,14 +164,12 @@ public class HeadsUp {
         }
     }
 
-    public boolean hasBoard(Street street) {
-        return board.containsKey(street);
+    private boolean hasBoardOnStreet(Street turn) {
+        return board.get(turn) != null;
     }
 
-    public CardSet getBoard(Street street) {
-        checkArgument(!street.equals(PREFLOP), "No cards on that street.");
-
-        return board.get(street);
+    public StreetMap<CardSet> getBoard() {
+        return board;
     }
 
     /**
@@ -345,7 +343,7 @@ public class HeadsUp {
 		/*
 		 * Make sure having turn means having flop
 		 */
-        if (hasBoard(Street.TURN) && !hasBoard(Street.FLOP)) {
+        if (hasBoardOnStreet(Street.TURN) && !hasBoardOnStreet(Street.FLOP)) {
             System.out.println("Missing streets from TURN");
             return false;
         }
@@ -353,7 +351,7 @@ public class HeadsUp {
 		/*
 		 * Make sure having river means having turn
 		 */
-        if (hasBoard(Street.RIVER) && !hasBoard(Street.TURN)) {
+        if (hasBoardOnStreet(Street.RIVER) && !hasBoardOnStreet(Street.TURN)) {
             System.out.println("Missing streets from RIVER");
             return false;
         }
