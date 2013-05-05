@@ -11,7 +11,7 @@ import java.util.EnumSet;
  * @author Alexander Nyberg
  */
 public class CBDistribution extends ActionDistribution {
-    private final ImmutableMap<ActionClassifier, Integer> actionMap = ImmutableMap.<ActionClassifier, Integer>builder()
+    private final static ImmutableMap<ActionClassifier, Integer> actionMap = ImmutableMap.<ActionClassifier, Integer>builder()
             .put(ActionClassifier.CHECK, 0)
             .put(ActionClassifier.BET, 1)
             .build();
