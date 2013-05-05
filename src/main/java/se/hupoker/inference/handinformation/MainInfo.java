@@ -19,7 +19,7 @@ class MainInfo {
 
         for (HeadsUp hu : list) {
             try {
-                PathHistory pb = PathBuilder.createPath(hu);
+                PathHistory pb = PathBuilder.factory(hu);
                 historyCollection.add(pb);
             } catch (IllegalHandException e) {
                 System.out.println("Broken hand.");

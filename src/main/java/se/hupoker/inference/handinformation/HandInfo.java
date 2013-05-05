@@ -46,7 +46,7 @@ public class HandInfo {
      * @throws IllegalHandException if erroneous hand.
      */
     public static HandInfo factory(HeadsUp hand) throws IllegalHandException {
-        PathHistory handPath = PathBuilder.createPath(hand);
+        PathHistory handPath = PathBuilder.factory(hand);
         StreetMap<CardSet> completeBoard = initializeBoard(hand.getBoard());
 
         CardSet lastCompleteBoard = getLastCompleteBoard(completeBoard);

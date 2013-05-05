@@ -1,6 +1,5 @@
 package se.hupoker.inference.tree;
 
-import se.hupoker.inference.Configuration;
 import se.hupoker.inference.handinformation.HandInfo;
 
 import java.util.Collection;
@@ -16,8 +15,8 @@ public class SerialOptimization implements TreeOptimizer {
         this.tree = tree;
     }
 
-    public void optimize(Collection<HandInfo> list) {
-        for (int i = 0; i < Configuration.OptimizationIterations; i++) {
+    public void optimize(Collection<HandInfo> list, int numberOfIterations) {
+        for (int i = 0; i < numberOfIterations; i++) {
             for (HandInfo hand : list) {
                 HandDerivatives opt = new HandDerivatives(tree, hand);
                 opt.run();

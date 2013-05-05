@@ -13,5 +13,5 @@ public interface TreeOptimizer {
      *
      * @param list
      */
-    void optimize(Collection<HandInfo> list);
+    void optimize(Collection<HandInfo> list, int numberOfIterations);
 }

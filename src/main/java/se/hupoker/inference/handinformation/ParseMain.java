@@ -33,7 +33,7 @@ public class ParseMain {
             @Override
             public PathHistory apply(HeadsUp input) {
                 try {
-                    return PathBuilder.createPath(input);
+                    return PathBuilder.factory(input);
                 } catch (IllegalHandException e) {
                     e.printStackTrace();
                     return null;

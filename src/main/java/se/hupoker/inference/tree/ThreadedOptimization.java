@@ -2,7 +2,6 @@ package se.hupoker.inference.tree;
 
 import se.hupoker.common.Computation;
 import se.hupoker.common.LowPriorityFactory;
-import se.hupoker.inference.Configuration;
 import se.hupoker.inference.handinformation.HandInfo;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ThreadedOptimization implements TreeOptimizer {
      * @param list
      */
     @Override
-    public void optimize(Collection<HandInfo> list) {
+    public void optimize(Collection<HandInfo> list, final int numberOfIterations) {
         List<Callable<Object>> callables = new ArrayList<>();
 
         for (HandInfo hand : list) {
@@ -38,7 +37,7 @@ public class ThreadedOptimization implements TreeOptimizer {
             callables.add(Executors.callable(opt));
         }
 
-        for (int i = 0; i < Configuration.OptimizationIterations; i++) {
+        for (int i = 0; i < numberOfIterations; i++) {
             try {
                 executor.invokeAll(callables);
             } catch (InterruptedException e) {

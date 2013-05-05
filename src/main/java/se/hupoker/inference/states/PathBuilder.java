@@ -35,7 +35,7 @@ public class PathBuilder {
      * @return Betting history of hand.
      * @throws IllegalHandException Betting is illegal.
      */
-    public static PathHistory createPath(HeadsUp hand) throws IllegalHandException {
+    public static PathHistory factory(HeadsUp hand) throws IllegalHandException {
         PathBuilder pathBuilder = new PathBuilder();
 
         pathBuilder.initialize(hand);
@@ -105,7 +105,6 @@ public class PathBuilder {
 	 * @param act
 	 */
 	private void addPathElement(Street street, Action act) {
-
 		PathElement element = new PathElement(
 				street,
                 effectiveStartStack.floatValue(),
