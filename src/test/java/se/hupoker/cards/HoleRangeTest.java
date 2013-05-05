@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -27,70 +28,70 @@ public class HoleRangeTest {
     @Test
     public void numberOfUnsuitedInRange() {
         List<HoleCards> result = holeRange.parse("AJs-A9s");
-        assertThat(result.size(), is(SUITED*3));
+        assertEquals(SUITED * 3, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfEgalInRange() {
         List<HoleCards> result = holeRange.parse("AJe-A9e");
-        assertThat(result.size(), is(EGAL*3));
+        assertEquals(EGAL * 3, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
-    public void numberOfSsuitedInRange() {
+    public void numberOfSuitedInRange() {
         List<HoleCards> result = holeRange.parse("AJo-A7o");
-        assertThat(result.size(), is(UNSUITED*5));
+        assertEquals(UNSUITED*5, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfPairs() {
         List<HoleCards> result = holeRange.parse("TT");
-        assertThat(result.size(), is(ONEPAIR));
+        assertEquals(ONEPAIR, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfUnsuited() {
         List<HoleCards> result = holeRange.parse("AKo");
-        assertThat(result.size(), is(UNSUITED));
+        assertEquals(UNSUITED, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfSuited() {
         List<HoleCards> result = holeRange.parse("AKs");
-        assertThat(result.size(), is(SUITED));
+        assertEquals(SUITED, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfPairsThatAreBetter() {
         List<HoleCards> result = holeRange.parse("TT+");
-        assertThat(result.size(), is(ONEPAIR*5));
+        assertEquals(ONEPAIR*5, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfUnsuitedThatAreBetter() {
         List<HoleCards> result = holeRange.parse("AJs+");
-        assertThat(result.size(), is(SUITED*3));
+        assertEquals(SUITED*3, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfEgalThatAreBetter() {
         List<HoleCards> result = holeRange.parse("AJe+");
-        assertThat(result.size(), is(EGAL*3));
+        assertEquals(EGAL*3, result.size());
         assertThatElementsAreUnique(result);
     }
 
     @Test
     public void numberOfSuitedThatAreBetter() {
         List<HoleCards> result = holeRange.parse("K2o+");
-        assertThat(result.size(), is(UNSUITED*11));
+        assertEquals(UNSUITED*11, result.size());
         assertThatElementsAreUnique(result);
     }
 }
