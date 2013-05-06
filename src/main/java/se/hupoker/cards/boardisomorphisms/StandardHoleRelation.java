@@ -8,7 +8,7 @@ import se.hupoker.cards.CardSet;
 import se.hupoker.cards.Suit;
 
 /**
- * Describes Texas hole card relation to a board.
+ * Describes Texas hole card relation to a board. Contains some approximation.
  * 
  * @author Alexander Nyberg
  *
@@ -35,7 +35,6 @@ class StandardHoleRelation extends RelationManager {
     }
 
     /**
-     *
      * @param hole
      * @return The suit configuration the hole cards have on this board.
      */
@@ -46,6 +45,8 @@ class StandardHoleRelation extends RelationManager {
         int holeAdd = (one == two ? 2 : 1);
         int common = holeAdd + Math.max(suitCounter.get(one), suitCounter.get(two));
 
+        // TODO: 4 suits on board, someone has A high, someone else has straight flush...
+        // TODO: Flush/FD with only one card, representation of which is the high flush card
         if (common >= 5) {
             return FlushConfiguration.Flush;
         } else if (common == 4 && board.size() < 5) {

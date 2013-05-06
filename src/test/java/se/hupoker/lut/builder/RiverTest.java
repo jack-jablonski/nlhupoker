@@ -4,23 +4,19 @@ import org.junit.Before;
 import org.junit.Test;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.Street;
+import se.hupoker.lut.LutKey;
 import se.hupoker.lut.LutPath;
 import se.hupoker.lut.RiverTable;
 import se.hupoker.cards.CardSet;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * @author Alexander Nyberg
  */
 public class RiverTest {
-    private TestAllSet testAllSet;
-    private RiverTable riverTable;
-
-    @Before
-    public void setUp() {
-        riverTable = new RiverTable();
-        riverTable.load(LutPath.getRiverHs());
-        testAllSet = new TestAllSet();
-    }
+    private TestAllSet testAllSet = new TestAllSet();
+    private RiverTable riverTable = RiverTable.create(LutPath.getRiverHs());
 
     @Test
     public void allSet() {
@@ -33,6 +29,22 @@ public class RiverTest {
         HoleCards hole = HoleCards.from("JhJs");
 
         testAllSet.testCombinationSet(riverTable, board, hole);
+    }
+
+    @Test
+    public void testCalculatedValue() {
+        CardSet board = CardSet.from("6sAsKh7s2s");
+        HoleCards hole = HoleCards.from("9sJd");
+
+        /**
+         * There are 4 higher spades (T,J,Q,K). Remove those + known cards
+         * then there are 52-5-2-4=41 remaining. 4*41+nchoosek(4,2) hands beat me out of
+         * nchoosek(45,2).
+         */
+        double hsValue = 0.828282828282828282;
+
+        LutKey key = new LutKey(board,hole);
+        assertEquals(hsValue, riverTable.lookupOne(key));
     }
 
     @Test

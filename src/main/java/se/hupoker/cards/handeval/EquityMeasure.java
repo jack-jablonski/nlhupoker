@@ -9,7 +9,6 @@ import se.hupoker.cards.HoleCards;
 */
 class EquityMeasure {
 	public static final double BADEQUITY = Float.NaN;
-	// TODO: enum!
 	public static final double AHEAD=1, TIED=0.5, BEHIND=0;
 
 	protected double getEHS(double now[], double equity[]) {

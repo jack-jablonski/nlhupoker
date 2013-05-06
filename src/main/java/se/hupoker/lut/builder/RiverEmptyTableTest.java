@@ -10,7 +10,7 @@ import se.hupoker.cards.CardSet;
 /**
  * @author Alexander Nyberg
  */
-public class RiverEmptyTable {
+public class RiverEmptyTableTest {
     private TestAllSet testAllSet;
     private RiverTable table;
 

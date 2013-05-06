@@ -52,7 +52,6 @@ public class PathElement {
         return pot;
     }
 
-    // Todo: derived?
     public float getToCall() {
         return toCall;
     }

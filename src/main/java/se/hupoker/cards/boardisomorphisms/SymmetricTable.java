@@ -32,6 +32,6 @@ class SymmetricTable {
 
 		 // Reverse order
 		Pair<HoleCards> reverseOrder = new Pair<>(holeTwo, holeOne);
-		table.put(relTwo, relOne,  reverseOrder);
+		table.put(relTwo, relOne, reverseOrder);
 	}
 }

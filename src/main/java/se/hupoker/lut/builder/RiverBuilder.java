@@ -33,7 +33,7 @@ final class RiverBuilder implements BoardRunner {
     }
 
     private void realRun(CardSet board) {
-        EquityMatrix me = EquityMatrix.from(board);
+        EquityMatrix me = EquityMatrix.factory(board);
 
         for (HoleCards hole : HoleCards.allOf()) {
             if (board.containsAny(hole)) {

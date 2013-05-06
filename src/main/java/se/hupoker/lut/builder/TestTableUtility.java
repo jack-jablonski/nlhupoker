@@ -13,6 +13,7 @@ import se.hupoker.cards.CardSet;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 final class TestTableUtility {
     public interface RandomRunner {
@@ -37,9 +38,12 @@ final class TestTableUtility {
 
         ev.buildEquities(board, hole);
 
-        if (hsTable != null) {
-            boolean doubleEquals = DoubleMath.equal(hsTable.lookupOne(new LutKey(board, hole)), runner.eval(ev));
-            assertTrue(doubleEquals);
+        float tableValue = hsTable.lookupOne(new LutKey(board, hole));
+        boolean doubleEquals = DoubleMath.equal(tableValue, runner.eval(ev));
+        if (!doubleEquals) {
+            System.out.println("Cards are:" + board + ", " + hole);
+            System.out.println("Evaluated table: " + tableValue + " and eval:" + runner.eval(ev));
+            fail();
         }
     }
 

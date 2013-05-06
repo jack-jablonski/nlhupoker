@@ -70,7 +70,7 @@ abstract public class ActionDistribution {
 	private final double BOUNDARY = 0.01;
 
 	/**
-	 * TODO: Will only hit boundary in one variable setUp giving up.
+	 * TODO: Will only hit boundary in one variable before giving up.
 	 * 
 	 * @param var
 	 * @param updates

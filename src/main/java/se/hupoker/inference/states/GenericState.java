@@ -8,7 +8,7 @@ import se.hupoker.common.Street;
 
 /**
  *
- * TODO: Should be immutable but yamlbeans...
+ * Should be immutable but yamlbeans needs mutability.
  *
  * @author Alexander Nyberg
  *

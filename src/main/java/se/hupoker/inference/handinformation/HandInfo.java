@@ -56,7 +56,7 @@ public class HandInfo {
     }
 
     /**
-     * TODO: Remove known, preferably in separate factory.
+     * TODO: Remove possible through seeing opponent showdown, preferably in separate factory.
      * Remove all known board cards from holepossible
      */
     private static PositionMap<HolePossible> initializeHolePossible(HeadsUp hand, CardSet lastCompleteBoard) {

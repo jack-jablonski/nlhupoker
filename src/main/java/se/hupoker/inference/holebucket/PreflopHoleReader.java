@@ -35,8 +35,7 @@ public class PreflopHoleReader implements HoleClusterer {
         HoleCluster bm = new HoleCluster();
 
         for (PreflopCluster pf : preflopClusters) {
-//            EnumSet<ActionDistOptions> options = getOptions(descriptor, pf);
-            EnumSet<ActionDistOptions> options = ActionDistOptions.empty();
+            EnumSet<ActionDistOptions> options = getOptions(descriptor, pf);
 
             ActionDistribution ad = ActionDistribution.from(descriptor.getBetting(), pf.range, options);
 
@@ -44,6 +43,17 @@ public class PreflopHoleReader implements HoleClusterer {
         }
 
         return bm;
+    }
+
+    /**
+     *
+     *
+     * @param descriptor
+     * @param preflopCluster
+     * @return Combination of State & Cluster
+     */
+    private EnumSet<ActionDistOptions> getOptions(GenericState descriptor, PreflopCluster preflopCluster) {
+        return ActionDistOptions.empty();
     }
 
     @Override
@@ -78,28 +88,5 @@ public class PreflopHoleReader implements HoleClusterer {
         }
     }
 
-    /**
-     * TODO: FIX
-     *
-     * @param descriptor
-     * @param pf
-     * @return
-     *
-    private EnumSet<ActionDistOptions> getOptions(GenericState descriptor, PreflopStructure pf) {
-    if (pf.strength == HandStrength.NONE || descriptor.getNofold() == HandStrength.NONE) {
-    return false;
-    }
 
-    if (pf.strength.strongerOrEqual(descriptor.getNofold())) {
-    System.out.println( descriptor.getActiontype() + "|Setting nofold:" + pf.name);
-    System.out.println(pf.strength + "|" + descriptor.getNofold());
-    return true;
-    }
-
-    if (descriptor.getActiontype() == Betting.FCR && pf.strength == HandStrength.NUT) {
-    return EnumSet.of(ActionDistOptions.NOFOLD);
-    }
-
-    return ActionDistOptions.empty();
-    }*/
 }

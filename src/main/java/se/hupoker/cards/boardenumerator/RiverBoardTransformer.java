@@ -35,9 +35,11 @@ class RiverBoardTransformer extends BoardTransformer {
     }
 
     /**
-     * TODO: We could skip some boards here. This is a minor optimization.
+     *
      * Strategy should be to find out what suit is the flush and replace all others using
      * the circularIterator with flush suit removed.
+     *
+     * We could skip some boards here as a minor optimization.
      *
      * @param board Contains completed flush draw.
      * @return

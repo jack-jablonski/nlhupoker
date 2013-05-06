@@ -9,6 +9,7 @@ import se.hupoker.common.DoubleMath;
 
 import java.util.List;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 /**
@@ -21,7 +22,7 @@ public class EquityMatrixTest {
 		CardSet board = CardSet.from("9c8h4s");
 
 		System.out.println(board);
-		EquityMatrix me = EquityMatrix.from(board);
+		EquityMatrix me = EquityMatrix.factory(board);
 
         HoleCards first = HoleCards.from("9d9h");
         HoleCards second = HoleCards.from("8d8c");
@@ -30,7 +31,24 @@ public class EquityMatrixTest {
         assertTrue(DoubleMath.equal(me.getEquity(first, second) + me.getEquity(second, first), 1.0));
         assertTrue(DoubleMath.equal(me.getEquity(first, second), me.getEquity(first, third)));
 	}
-	
+
+    @Test
+    public void testSpecificRiverHandStrength() {
+        CardSet board = CardSet.from("6sAsKh7s2s");
+        HoleCards hole = HoleCards.from("9sJd");
+
+        /**
+         * There are 4 higher spades (T,J,Q,K). Remove those + known cards
+         * then there are 52-5-2-4=41 remaining. 4*41+nchoosek(4,2) hands beat me out of
+         * nchoosek(45,2).
+         */
+        final double hsValue = 0.828282828282828282;
+
+        EquityMatrix me = EquityMatrix.factory(board);
+
+        assertEquals(hsValue, me.getAverageEquity(hole));
+    }
+
 	private CardSet getRandomBoard(int numberOfCards) {
         List<Card> shuffled = DeckSet.shuffledDeck();
         CardSet board = new CardSet(numberOfCards);
@@ -45,7 +63,7 @@ public class EquityMatrixTest {
             CardSet board = getRandomBoard(numberOfCards);
 
             long start = System.currentTimeMillis();
-            EquityMatrix me = EquityMatrix.from(board);
+            EquityMatrix me = EquityMatrix.factory(board);
             long end = System.currentTimeMillis();
 
             me.printStatistics();

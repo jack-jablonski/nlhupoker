@@ -13,22 +13,14 @@ abstract class RelationManager {
 
     protected static RelationManager factory(CardSet board) {
         // More clever than previously thought!
+//        if (board.size() == 5) {
+//            return new RiverHoleRelation(board);
+//        } else {
+//            return new StandardHoleRelation(board);
+//        }
+
         return new StandardHoleRelation(board);
     }
-
-    /*protected static RelationManager factory(CardSet board) {
-        switch (board.size()) {
-            case 3:
-                return new StandardHoleRelation(board);
-            case 4:
-                return new StandardHoleRelation(board);
-            case 5:
-                return new RiverHoleRelation(board);
-//                return new StandardHoleRelation(board);
-            default:
-                throw new IllegalArgumentException("Board size unknown:" + board);
-        }
-    }*/
 
     abstract protected HoleRelation get(HoleCards hole);
 }

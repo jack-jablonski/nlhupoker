@@ -39,7 +39,7 @@ public class StateNode {
     private final PrintWriter writer;
 
     protected StateNode(GenericState state, HoleClusterer holeClusterer, PrintWriter writer) {
-        // TODO: Should clone, since GenericState mutable b/c yamlbeans
+        // TODO: Should clone, since GenericState is mutable because of yamlbeans
         this.center = state;
         this.holeClusterer = holeClusterer;
         this.writer = writer;
@@ -53,7 +53,7 @@ public class StateNode {
     }
 
     /**
-     * TODO: Should be f: Board -> Map<HoleCards, ActionDistribution>
+     * TODO: Should be f: Board -> Map<HoleCards, ActionDistribution> instead of retrieving individual HoleCards
      *
      * @param board
      * @param hole

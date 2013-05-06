@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 
 /**
- * TODO:
- * - If blocking only 1 suit it matters very little which one (try 0.25707385 vs. 0.25704312) for general rank patterns.
+ * -> If blocking only 1 suit it matters very little which one (try 0.25707385 vs. 0.25704312) for general rank patterns.
  *
  * @author Alexander Nyberg
  */
