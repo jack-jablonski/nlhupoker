@@ -37,6 +37,11 @@ public class IsomorphicHole {
         return map;
     }
 
+    /**
+     *
+     * @param original
+     * @return The isomorphic equivalent wrt. board
+     */
     public HoleCards getIsomorphic(HoleCards original) {
         Map<Suit, Suit> map = getSuitMap(board);
         SortedSet<Suit> remaining = new TreeSet<>(immutableSuits);
@@ -59,7 +64,7 @@ public class IsomorphicHole {
         }
 
         HoleCards isoCards = HoleCards.of(isomorphic);
-        System.out.println("Mapped " + original + " -> " + isoCards);
+//        System.out.println("Mapped " + original + " -> " + isoCards);
         return isoCards;
     }
 }

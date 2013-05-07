@@ -15,6 +15,9 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+/**
+ * @author Alexander Nyberg
+ */
 final class TestTableUtility {
     public interface RandomRunner {
         public double eval(EquityVector ev);

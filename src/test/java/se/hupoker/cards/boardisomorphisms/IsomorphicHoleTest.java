@@ -1,30 +1,26 @@
-package se.hupoker.cards.boardenumerator;
+package se.hupoker.cards.boardisomorphisms;
 
+import com.google.common.math.IntMath;
 import org.junit.Test;
-import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.CardSet;
-import se.hupoker.cards.boardisomorphisms.IsomorphicHole;
+import se.hupoker.cards.HoleCards;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  *
  * @author Alexander Nyberg
  *
  */
-public class EnumerateBoardTest {
-    private BoardRunner runner = new BoardRunner() {
-        @Override
-        public void evaluateBoard(CardSet board) {
-            // Do nothing
-        }
-    };
-
+public class IsomorphicHoleTest {
     @Test
     public void testNumberOfHoleCards() {
         Set<HoleCards> set = new HashSet<>();
-        CardSet board = CardSet.from("4c5d6h");
+        CardSet board = CardSet.from("4c5c6c");
         IsomorphicHole isoTransform = new IsomorphicHole(board);
 
         for (HoleCards hole : HoleCards.allOf()) {
@@ -36,6 +32,9 @@ public class EnumerateBoardTest {
             set.add(isomorphic);
         }
 
-        System.out.println("Have #" + set.size());
+        // Flushes + pairs + flushdraw + nothing
+        int isomorphisms = IntMath.binomial(10, 2) + IntMath.binomial(13, 1) + 10*13 + IntMath.binomial(13, 2);
+
+        assertThat(isomorphisms, is(set.size()));
     }
 }

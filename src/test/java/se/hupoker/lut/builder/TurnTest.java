@@ -6,6 +6,9 @@ import se.hupoker.common.Street;
 import se.hupoker.lut.LutPath;
 import se.hupoker.lut.TurnTable;
 
+/**
+ * @author Alexander Nyberg
+ */
 public class TurnTest {
     private TestAllSet testAllSet = new TestAllSet();
 
