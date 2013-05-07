@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class Card implements Comparable<Card> {
     public static final int NumberOfCards = 52;
-    private static final CardTable table = new CardTable();
+    private static final ImmutableTable<Rank, Suit, Card> table = createTable();
     private final Rank rank;
     private final Suit suit;
 
@@ -35,25 +35,24 @@ public class Card implements Comparable<Card> {
     /**
      * @param rank
      * @param suit
-     * @return Immutable existing card from table.
+     * @return Immutable card
      */
     public static Card from(Rank rank, Suit suit) {
         return table.get(rank, suit);
     }
 
-
     /**
      * Constructs a card of the specified rank and suit.
      *
-     * @param rs a {@link String} of length 2, where the first character is in {@link Rank#RANK_CHARS} and
+     * @param representation a {@link String} of length 2, where the first character is in {@link Rank#RANK_CHARS} and
      *           the second is in {@link Suit#SUIT_CHARS} (case insensitive).
-     * @throws IllegalArgumentException on the first character in rs which is not found in the respective string.
+     * @throws IllegalArgumentException on the first character in representation which is not found in the respective string.
      */
-    public static Card from(String rs) {
-        checkArgument(rs.length() == 2, "'" + rs + "'");
+    public static Card from(String representation) {
+        checkArgument(representation.length()==2, "'" + representation + "'");
 
-        Rank rank = Rank.fromChar(rs.charAt(0));
-        Suit suit = Suit.fromChar(rs.charAt(1));
+        Rank rank = Rank.fromChar(representation.charAt(0));
+        Suit suit = Suit.fromChar(representation.charAt(1));
         return Card.from(rank, suit);
     }
 
@@ -61,7 +60,7 @@ public class Card implements Comparable<Card> {
      * @return Complete space of cards.
      */
     public static Collection<Card> allOf() {
-        return table.allOf();
+        return table.values();
     }
 
     /**
@@ -75,8 +74,6 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Returns the {@link Rank} of this card.
-     *
      * @return the {@link Rank} of this card.
      */
     public Rank rankOf() {
@@ -84,8 +81,6 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Returns the {@link Suit} of this card.
-     *
      * @return the {@link Suit} of this card.
      */
     public Suit suitOf() {
@@ -132,29 +127,21 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Essentially turning Card into an enum.
+     * Essentially turning Card into an enum by:
+     * 1) Card class itself being immutable
+     * 2) Using an immutable lookup table
+     *
+     * @return Immutable lookup table containing all 52 Cards.
      */
-    private static class CardTable {
-        private final ImmutableTable<Rank, Suit, Card> table;
+    private static ImmutableTable<Rank, Suit, Card> createTable() {
+        final Table<Rank, Suit, Card> localTable = ArrayTable.create(Rank.allOf(), Suit.allOf());
 
-        public Card get(Rank rank, Suit suit) {
-            return table.get(rank, suit);
-        }
-
-        public Collection<Card> allOf() {
-            return table.values();
-        }
-
-        private CardTable() {
-            Table<Rank, Suit, Card> localTable = ArrayTable.create(Rank.allOf(), Suit.allOf());
-
+        for (Rank r : Rank.values()) {
             for (Suit s : Suit.values()) {
-                for (Rank r : Rank.values()) {
-                    localTable.put(r, s, new Card(r, s));
-                }
+                localTable.put(r, s, new Card(r, s));
             }
-
-            table = ImmutableTable.copyOf(localTable);
         }
+
+        return ImmutableTable.copyOf(localTable);
     }
 }

@@ -93,10 +93,6 @@ public class HoleCards extends CardSet {
         return indexMap.keySet();
     }
 
-    private static class HoleCardsTable {
-
-    }
-
     /**
      * Builds on underlying hashSet & Equals. Somewhat of a memory optimization...
      */
