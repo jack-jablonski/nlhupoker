@@ -1,8 +1,9 @@
 package se.hupoker.lut.builder;
 
-import org.junit.Before;
 import org.junit.Test;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.boardenumerator.BoardRunner;
+import se.hupoker.cards.boardenumerator.IsomorphicBoardEnumerator;
 import se.hupoker.common.Street;
 import se.hupoker.lut.LutKey;
 import se.hupoker.lut.LutPath;
@@ -16,15 +17,39 @@ import static junit.framework.Assert.assertEquals;
  */
 public class RiverTest {
     private TestAllSet testAllSet = new TestAllSet();
-    private RiverTable riverTable = RiverTable.create(LutPath.getRiverHs());
+    private RiverTable riverTable;
+
+    private BoardRunner setBoards = new BoardRunner() {
+        @Override
+        public void evaluateBoard(CardSet board) {
+            for (HoleCards hole : HoleCards.allOf()) {
+                if (board.containsAny(hole)) {
+                    continue;
+                }
+
+                LutKey key = new LutKey(board, hole);
+                riverTable.setManually(key, (float) hole.ordinal() / HoleCards.TexasCombinations);
+            }
+        }
+    };
 
     @Test
-    public void allSet() {
+    public void allEntriesInTableShouldBeSetAfterEnumeration() {
+        IsomorphicBoardEnumerator river = new IsomorphicBoardEnumerator(setBoards, Street.RIVER);
+
+        river.enumerate();
         testAllSet.testAllHandCombinationsSet(riverTable, Street.RIVER);
     }
 
     @Test
+    public void allSetInExistingTable() {
+        testAllSet.testAllHandCombinationsSet(riverTable, Street.RIVER);
+        riverTable = new RiverTable();
+    }
+
+    @Test
     public void otherSpecific() {
+        riverTable = RiverTable.create(LutPath.getRiverHs());
         CardSet board = CardSet.from("2c2d2s3c4c");
         HoleCards hole = HoleCards.from("JhJs");
 
@@ -33,6 +58,7 @@ public class RiverTest {
 
     @Test
     public void testCalculatedValue() {
+        riverTable = RiverTable.create(LutPath.getRiverHs());
         CardSet board = CardSet.from("6sAsKh7s2s");
         HoleCards hole = HoleCards.from("9sJd");
 
@@ -48,7 +74,8 @@ public class RiverTest {
     }
 
     @Test
-    public void specific() {
+    public void testSpecificTableEntry() {
+        riverTable = RiverTable.create(LutPath.getRiverHs());
         // 4c5c6c7c2d|2c3c
         // 4c5c6c2d2h|2c3c
         CardSet board = CardSet.from("4c5c6c2d2h");
@@ -58,10 +85,10 @@ public class RiverTest {
     }
 
     @Test
-    public void randomHS() {
-        int NumberOfIterations = 1000;
+    public void compareRandomTableEntriesWithFreshCalculationValues() {
+        int numberOfIterations = 1000;
+        riverTable = RiverTable.create(LutPath.getRiverHs());
 
-        TestTableUtility test = new TestTableUtility(TestTableUtility.hsRunner);
-        test.runAll(riverTable, Street.RIVER, NumberOfIterations);
+        TestTableUtility.runRandomComparisons(riverTable, Street.RIVER, numberOfIterations, TestTableUtility.handEvaluator);
     }
 }

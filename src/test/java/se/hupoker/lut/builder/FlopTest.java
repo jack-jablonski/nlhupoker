@@ -2,8 +2,13 @@ package se.hupoker.lut.builder;
 
 import org.junit.Before;
 import org.junit.Test;
+import se.hupoker.cards.CardSet;
+import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.boardenumerator.BoardRunner;
+import se.hupoker.cards.boardenumerator.IsomorphicBoardEnumerator;
 import se.hupoker.common.Street;
 import se.hupoker.lut.FlopTable;
+import se.hupoker.lut.LutKey;
 import se.hupoker.lut.LutPath;
 
 /**
@@ -13,27 +18,46 @@ import se.hupoker.lut.LutPath;
  */
 public class FlopTest {
     private TestAllSet testAllSet = new TestAllSet();
+    private FlopTable flopTable;
 
     @Before
     public void setUp() {
-        testAllSet = new TestAllSet();
+        flopTable = new FlopTable();
+    }
+
+    private BoardRunner setBoards = new BoardRunner() {
+        @Override
+        public void evaluateBoard(CardSet board) {
+            for (HoleCards hole : HoleCards.allOf()) {
+                if (board.containsAny(hole)) {
+                    continue;
+                }
+
+                final LutKey key = new LutKey(board, hole);
+                flopTable.setManually(key, (float) hole.ordinal() / HoleCards.TexasCombinations);
+            }
+        }
+    };
+
+    @Test
+    public void allEntriesInTableShouldBeSetAfterEnumeration() {
+        IsomorphicBoardEnumerator flop = new IsomorphicBoardEnumerator(setBoards, Street.FLOP);
+        flop.enumerate();
+        testAllSet.testAllHandCombinationsSet(flopTable, Street.FLOP);
     }
 
     @Test
-    public void allSet() {
-        FlopTable flopTable = new FlopTable();
-        flopTable.load(LutPath.getFlopHs());
+    public void allSetInExistingTable() {
+        flopTable = FlopTable.create(LutPath.getFlopHs());
 
         testAllSet.testAllHandCombinationsSet(flopTable, Street.FLOP);
     }
 
     @Test
-    public void randomHS() {
-        FlopTable ft = new FlopTable();
-        ft.load(LutPath.getFlopHs());
+    public void compareRandomTableEntriesWithFreshCalculationValues() {
+        final int iterations = 100;
+        flopTable = FlopTable.create(LutPath.getFlopHs());
 
-        int NUM_RANDOM_ITERATIONS = 100;
-        TestTableUtility test = new TestTableUtility(TestTableUtility.hsRunner);
-        test.runAll(ft, Street.FLOP, NUM_RANDOM_ITERATIONS);
+        TestTableUtility.runRandomComparisons(flopTable, Street.FLOP, iterations, TestTableUtility.handEvaluator);
     }
 }

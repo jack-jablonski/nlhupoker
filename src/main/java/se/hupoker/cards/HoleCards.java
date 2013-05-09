@@ -16,15 +16,18 @@ import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Specialized CardSet:
- * Immutable, sorted Texas Holdem hole cards.
- * Implements an ordinal for every HoleCards possible.
+ * -> Immutable, sorted Texas Holdem hole cards.
+ * -> Implements an ordinal.
  *
  * @author Alexander Nyberg
  */
 public class HoleCards extends CardSet {
     public static final int TexasHoleCards = 2;
-    public static final int TexasCombinations = IntMath.binomial(Card.NumberOfCards, 2);
+    public static final int TexasCombinations = IntMath.binomial(Card.NumberOfCards, TexasHoleCards);
 
+    /**
+     * @param cards May only create HoleCards through immutable lists!
+     */
     private HoleCards(ImmutableList<Card> cards) {
         super(cards);
     }
@@ -78,7 +81,10 @@ public class HoleCards extends CardSet {
     }
 
     /**
-     * ordinal(): HoleCards -> [0, TexasCombinations)
+     * In a true Collection-oriented solution this method would not be required. The real world
+     * however looks different. By far the biggest user is the LUT.
+     *
+     * f: HoleCards -> [0, TexasCombinations)
      *
      * @return Unique index of this.
      */

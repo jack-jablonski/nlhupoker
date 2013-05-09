@@ -50,10 +50,11 @@ public class HoleCardsTest {
 		SortedSet<Integer> set = new TreeSet<>();
 
 		for (HoleCards hole : HoleCards.allOf()) {
-			assertFalse(set.contains(hole.ordinal()));
-			set.add(hole.ordinal());
+			boolean setAffected = set.add(hole.ordinal());
+            assertTrue(setAffected);
 		}
 
+        // No auto-boxing :(
         assertEquals(new Integer(0), set.first());
         assertEquals(new Integer(HoleCards.TexasCombinations -1), set.last());
 	}

@@ -23,46 +23,40 @@ final class TestTableUtility {
         public double eval(EquityVector ev);
     }
 
-    public static RandomRunner hsRunner = new RandomRunner() {
+    public static RandomRunner handEvaluator = new RandomRunner() {
         @Override
         public double eval(EquityVector ev) {
             return ev.getHS();
         }
     };
 
-    private final RandomRunner runner;
-
-    public TestTableUtility(RandomRunner rr) {
-        runner = rr;
-    }
-
-    private void testOneRandom(LutTable hsTable, CardSet board, HoleCards hole) {
+    private static void compareTableEntryWithCalculation(LutTable table, CardSet board, HoleCards hole, RandomRunner evaluator) {
         EquityVector ev = new EquityVector();
 
         ev.buildEquities(board, hole);
 
-        float tableValue = hsTable.lookupOne(new LutKey(board, hole));
-        boolean doubleEquals = DoubleMath.equal(tableValue, runner.eval(ev));
+        float tableValue = table.lookupOne(new LutKey(board, hole));
+        boolean doubleEquals = DoubleMath.equal(tableValue, evaluator.eval(ev));
         if (!doubleEquals) {
             System.out.println("Cards are:" + board + ", " + hole);
-            System.out.println("Evaluated table: " + tableValue + " and eval:" + runner.eval(ev));
+            System.out.println("Evaluated table: " + tableValue + " and eval:" + evaluator.eval(ev));
             fail();
         }
     }
 
-    public void runOne(LutTable hsTable, int numberOfBoardCards) {
+    public static void compareRandomEntry(LutTable hsTable, int numberOfBoardCards, RandomRunner evaluator) {
         List<Card> shuffled = DeckSet.shuffledDeck();
 
         HoleCards hole = HoleCards.of(shuffled.subList(0, HoleCards.TexasHoleCards));
         shuffled.removeAll(hole);
         CardSet board = new CardSet(shuffled.subList(0, numberOfBoardCards));
 
-        testOneRandom(hsTable, board, hole);
+        compareTableEntryWithCalculation(hsTable, board, hole, evaluator);
     }
 
-    public void runAll(LutTable hsTable, Street street, int iterations) {
+    public static void runRandomComparisons(LutTable hsTable, Street street, int iterations, RandomRunner evaluator) {
         for (int i = 0; i < iterations; i++) {
-            runOne(hsTable, street.numberOfBoardCards());
+            compareRandomEntry(hsTable, street.numberOfBoardCards(), evaluator);
         }
     }
 }

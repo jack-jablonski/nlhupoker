@@ -21,8 +21,6 @@ final class TestAllSet {
     protected void testCombinationSet(LutTable table, CardSet board, HoleCards hole) {
         float value = table.lookupOne(new LutKey(board, hole));
 
-        //System.out.println(board + "|" + hole);
-        //if (value < 0 || value > 1) {
         assertFalse(Float.isNaN(value));
         assertFalse(Float.isInfinite(value));
 
@@ -42,6 +40,12 @@ final class TestAllSet {
         }
     }
 
+    /**
+     * Brute force iteration over all possible (board, hole card) combinations.
+     *
+     * @param table
+     * @param street
+     */
     protected void testAllHandCombinationsSet(LutTable table, Street street) {
         ICombinatoricsVector<Card> initialVector = Factory.createVector(Card.allOf());
         Generator<Card> boardGenerator = Factory.createSimpleCombinationGenerator(initialVector, street.numberOfBoardCards());

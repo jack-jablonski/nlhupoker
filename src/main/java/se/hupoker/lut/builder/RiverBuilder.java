@@ -3,7 +3,7 @@ package se.hupoker.lut.builder;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.boardenumerator.BoardRunner;
-import se.hupoker.cards.boardenumerator.EnumerateBoard;
+import se.hupoker.cards.boardenumerator.IsomorphicBoardEnumerator;
 import se.hupoker.cards.handeval.EquityMatrix;
 import se.hupoker.common.Street;
 import se.hupoker.lut.LutKey;
@@ -22,17 +22,8 @@ final class RiverBuilder implements BoardRunner {
         river_hs.save(LutPath.getRiverHs());
     }
 
-    private void dryRun(CardSet board) {
-        for (HoleCards hole : HoleCards.allOf()) {
-            if (board.containsAny(hole)) {
-                continue;
-            }
-
-            river_hs.setManually(new LutKey(board, hole), (float) hole.ordinal());
-        }
-    }
-
-    private void realRun(CardSet board) {
+    @Override
+    public void evaluateBoard(CardSet board) {
         EquityMatrix me = EquityMatrix.factory(board);
 
         for (HoleCards hole : HoleCards.allOf()) {
@@ -40,22 +31,18 @@ final class RiverBuilder implements BoardRunner {
                 continue;
             }
 
-            river_hs.setManually(new LutKey(board, hole), (float) me.getAverageEquity(hole));
+            LutKey key = new LutKey(board, hole);
+            river_hs.setManually(key, (float) me.getAverageEquity(hole));
         }
-    }
 
-    @Override
-    public void evaluateBoard(CardSet board) {
-//        dryRun(board);
-        realRun(board);
         System.out.println("RiverBuilder set " + board);
     }
 
     public static void main(String[] args) {
         RiverBuilder build = new RiverBuilder();
-        EnumerateBoard river = new EnumerateBoard(build, Street.RIVER);
+        IsomorphicBoardEnumerator river = new IsomorphicBoardEnumerator(build, Street.RIVER);
 
-        river.iterateAllBoards();
+        river.enumerate();
         river.printCompletedStats();
         build.save();
     }

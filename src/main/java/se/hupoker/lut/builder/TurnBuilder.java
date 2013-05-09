@@ -2,7 +2,7 @@ package se.hupoker.lut.builder;
 
 import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.boardenumerator.BoardRunner;
-import se.hupoker.cards.boardenumerator.EnumerateBoard;
+import se.hupoker.cards.boardenumerator.IsomorphicBoardEnumerator;
 import se.hupoker.cards.handeval.EquityMatrix;
 import se.hupoker.common.Street;
 import se.hupoker.lut.LutKey;
@@ -15,7 +15,7 @@ import se.hupoker.cards.CardSet;
  * @author Alexander Nyberg
  *
  */
-final class TurnBuilder implements BoardRunner {
+class TurnBuilder implements BoardRunner {
     private final TurnTable turn_hs = new TurnTable();
     private final TurnTable turn_ppot = new TurnTable();
     private final TurnTable turn_npot = new TurnTable();
@@ -26,20 +26,8 @@ final class TurnBuilder implements BoardRunner {
         turn_npot.save(LutPath.getTurnNpot());
     }
 
-    private void dryRun(CardSet board) {
-        for (HoleCards hole : HoleCards.allOf()) {
-            if (board.containsAny(hole)) {
-                continue;
-            }
-
-            final LutKey key = new LutKey(board, hole);
-            turn_hs.setManually(key, (float) hole.ordinal());
-            turn_ppot.setManually(key, (float) hole.ordinal());
-            turn_npot.setManually(key, (float) hole.ordinal());
-        }
-    }
-
-    private void realRun(CardSet board) {
+    @Override
+    public void evaluateBoard(CardSet board) {
         EquityMatrix me = EquityMatrix.factory(board);
 
         for (HoleCards hole : HoleCards.allOf()) {
@@ -52,20 +40,14 @@ final class TurnBuilder implements BoardRunner {
             turn_ppot.setManually(key, (float) me.getPpot(hole));
             turn_npot.setManually(key, (float) me.getNpot(hole));
         }
-    }
-
-    @Override
-    public void evaluateBoard(CardSet board) {
-        //dryRun(board);
-        realRun(board);
         System.out.println("TurnBuilder set " + board);
     }
 
     public static void main(String[] args) {
         TurnBuilder turnBuilder = new TurnBuilder();
-        EnumerateBoard turnEnumerator = new EnumerateBoard(turnBuilder, Street.TURN);
+        IsomorphicBoardEnumerator turnEnumerator = new IsomorphicBoardEnumerator(turnBuilder, Street.TURN);
 
-        turnEnumerator.iterateAllBoards();
+        turnEnumerator.enumerate();
         turnBuilder.save();
     }
 }
