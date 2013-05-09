@@ -6,7 +6,6 @@ import se.hupoker.cards.RankIndex;
  * Immutable class for Holecard relation to board.
  *
  * @author Alexander Nyberg
- *
  */
 class HoleRelation {
     private final int rank;
@@ -28,7 +27,6 @@ class HoleRelation {
     }
 
     /**
-     *
      * @return Perfect hash.
      */
     @Override

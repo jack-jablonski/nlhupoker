@@ -12,7 +12,7 @@ import se.hupoker.cards.CardSet;
  */ 
 public final class PairManager {
 	private final RelationManager relationManager;
-    private final SymmetricTable cache = new SymmetricTable();
+    private final SymmetricRelationTable cache = new SymmetricRelationTable();
     private int cacheMiss, cacheHit;
 
 	private PairManager(RelationManager relationManager) {

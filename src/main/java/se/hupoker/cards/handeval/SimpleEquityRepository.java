@@ -9,7 +9,6 @@ import se.hupoker.common.Street;
 public class SimpleEquityRepository implements EquityRepository {
     @Override
     public EquityMatrix get(Street Street, CardSet board) {
-        System.out.println("EquityMatrix for " + board);
-        return EquityMatrix.factory(board);
+        return EquityMatrixFactory.factory(board);
     }
 }

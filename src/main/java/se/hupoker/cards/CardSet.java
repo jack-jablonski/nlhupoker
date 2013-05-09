@@ -75,6 +75,7 @@ public class CardSet implements Set<Card> {
     /**
      * @return <tt>true</tt> (as specified by {@link Collection#add})
      */
+    @Override
     public boolean add(Card c) {
         checkArgument(!contains(c));
         return cards.add(c);
@@ -94,19 +95,22 @@ public class CardSet implements Set<Card> {
         return result;
     }
 
+    @Override
     public void clear() {
         cards.clear();
     }
 
+    @Override
     public boolean contains(Object o) {
         return cards.contains(o);
     }
 
+    @Override
     public boolean containsAll(Collection<?> coll) {
         return cards.containsAll(coll);
     }
 
-    public boolean containsAny(Collection<?> coll) {
+     public boolean containsAny(Collection<?> coll) {
         for (Object obj : coll) {
             if (contains(obj)) {
                 return true;
@@ -135,34 +139,42 @@ public class CardSet implements Set<Card> {
         return result;
     }
 
+    @Override
     public boolean isEmpty() {
         return cards.isEmpty();
     }
 
+    @Override
     public Iterator<Card> iterator() {
         return cards.iterator();
     }
 
+    @Override
     public boolean remove(Object o) {
         return cards.remove(o);
     }
 
+    @Override
     public boolean removeAll(Collection<?> coll) {
         return cards.removeAll(coll);
     }
 
+    @Override
     public boolean retainAll(Collection<?> coll) {
         return cards.retainAll(coll);
     }
 
+    @Override
     public int size() {
         return cards.size();
     }
 
+    @Override
     public Card[] toArray() {
         return cards.toArray(new Card[cards.size()]);
     }
 
+    @Override
     public <Card> Card[] toArray(Card[] a) {
         return cards.toArray(a);
     }

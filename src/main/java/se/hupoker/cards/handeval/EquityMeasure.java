@@ -2,6 +2,8 @@ package se.hupoker.cards.handeval;
 
 import se.hupoker.cards.HoleCards;
 
+import java.io.Serializable;
+
 /**
 * 
 * @author Alexander Nyberg
@@ -21,7 +23,7 @@ class EquityMeasure {
      *
      * @return Average equity against the hand represented in equity
      */
-	protected double getEquity(double equity[]) {
+	protected static double getEquity(double equity[]) {
 		double size = 0;
 		double sum = 0;
 
@@ -43,7 +45,7 @@ class EquityMeasure {
 	 * 
 	 * @return Current "hand strength".
 	 */
-    protected double getHS(double now[]) {
+    protected static double getHS(double now[]) {
 		double size = 0;
 		double summ = 0;
 
@@ -67,7 +69,7 @@ class EquityMeasure {
 	 * 
 	 * @return Average equity against the hands we're behind now against.
 	 */
-    protected double getPPOT(double now[], double equity[]) {
+    protected static double getPPOT(double now[], double equity[]) {
 		double normalizer = 0;
 		double equitySum = 0;
 
@@ -94,7 +96,7 @@ class EquityMeasure {
      *
      * @return Average equity against the hands we're ahead right now against.
      */
-	protected double getNPOT(double now[], double equity[]) {
+	protected static double getNPOT(double now[], double equity[]) {
 		double normalizer = 0;
 		double equitySum = 0;
 

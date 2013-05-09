@@ -14,7 +14,7 @@ import java.util.Map;
 public interface HoleClusterer {
     /**
      * @param descriptor
-     * @return The distribution for this node.
+     * @return The cluster universe of this node.
      */
     public HoleCluster getClusterUniverse(GenericState descriptor);
 

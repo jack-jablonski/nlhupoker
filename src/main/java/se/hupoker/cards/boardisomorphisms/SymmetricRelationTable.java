@@ -11,10 +11,10 @@ import com.google.common.collect.Table;
 * @author Alexander Nyberg
 *
 */
-class SymmetricTable {
+class SymmetricRelationTable {
 	private final Table<HoleRelation, HoleRelation, Pair<HoleCards>> table;
 
-	public SymmetricTable() {
+	public SymmetricRelationTable() {
 		table = HashBasedTable.create();
 	}
 

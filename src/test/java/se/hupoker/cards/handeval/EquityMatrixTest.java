@@ -22,7 +22,7 @@ public class EquityMatrixTest {
 		CardSet board = CardSet.from("9c8h4s");
 
 		System.out.println(board);
-		EquityMatrix me = EquityMatrix.factory(board);
+		EquityMatrix me = EquityMatrixFactory.factory(board);
 
         HoleCards first = HoleCards.from("9d9h");
         HoleCards second = HoleCards.from("8d8c");
@@ -44,7 +44,7 @@ public class EquityMatrixTest {
          */
         final double hsValue = 0.828282828282828282;
 
-        EquityMatrix me = EquityMatrix.factory(board);
+        EquityMatrix me = EquityMatrixFactory.factory(board);
 
         assertEquals(hsValue, me.getAverageEquity(hole));
     }
@@ -63,10 +63,10 @@ public class EquityMatrixTest {
             CardSet board = getRandomBoard(numberOfCards);
 
             long start = System.currentTimeMillis();
-            EquityMatrix me = EquityMatrix.factory(board);
+            EquityMatrix me = EquityMatrixFactory.factory(board);
             long end = System.currentTimeMillis();
 
-            me.printStatistics();
+//            me.printStatistics();
             System.out.println(board + " execution time was "+(end-start)+" ms.");
         }
     }
