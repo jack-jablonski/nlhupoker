@@ -58,16 +58,6 @@ public class StateNode {
     }
 
     /**
-     * TODO: Could use caching of the clustering per board
-     *
-     * @param board The board to cluster the holecards on.
-     */
-    private void getBucketMapping(CardSet board) {
-        Map<HoleCards, Integer> map = holeClusterer.getClustering(equityRepository, board);
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * @param board The board we want to cluster the holecards of
      * @return The distribution of actions.
      */

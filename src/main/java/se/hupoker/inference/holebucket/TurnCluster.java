@@ -12,6 +12,10 @@ public class TurnCluster  {
         this.strength = strength;
     }
 
+    public HoleTuple getHoleTuple() {
+        return holeTuple;
+    }
+
     public static class TurnClusterBuilder implements ClusterBuilder<TurnCluster> {
         public HandStrength strength = HandStrength.NONE;
         public double hs;

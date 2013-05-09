@@ -30,7 +30,7 @@ class CalculateGradient implements PathEvaluator {
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution actionDist = actionDistributionMap.get(board);
+            ActionDistribution actionDist = actionDistributionMap.get(hole);
 
 			/**
 			 * Core update

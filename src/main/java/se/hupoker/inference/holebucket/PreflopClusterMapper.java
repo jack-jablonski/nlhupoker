@@ -17,11 +17,11 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * @author Alexander Nyberg
  */
-public class PreflopHoleReader implements HoleClusterer {
+public class PreflopClusterMapper implements HoleClusterer {
     private final List<PreflopCluster> preflopClusters;
     private final Map<HoleCards, Integer> map = new HashMap<>();
 
-    public PreflopHoleReader(Collection<PreflopCluster> preflopClusters) {
+    public PreflopClusterMapper(Collection<PreflopCluster> preflopClusters) {
         this.preflopClusters = new ArrayList<>(preflopClusters);
 
         buildMap();
@@ -62,7 +62,7 @@ public class PreflopHoleReader implements HoleClusterer {
 
     @Override
     public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
-        return ImmutableMap.copyOf(map);
+        return map;
     }
 
     private void verify() {

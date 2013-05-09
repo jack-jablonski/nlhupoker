@@ -12,6 +12,10 @@ public class FlopCluster {
         this.strength = strength;
     }
 
+    public HoleTuple getHoleTuple() {
+        return holeTuple;
+    }
+
     public static class FlopClusterBuilder implements ClusterBuilder<FlopCluster> {
         public HandStrength strength = HandStrength.NONE;
         public double hs;

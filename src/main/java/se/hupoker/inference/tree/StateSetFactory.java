@@ -22,11 +22,11 @@ public class StateSetFactory {
         Collection<GenericState> prefFopStates = stateRepository.getPreflop();
 
         Collection<PreflopCluster> preflopClusters = clusterRepository.preflop();
-        PreflopHoleReader preflopHoleReader = new PreflopHoleReader(preflopClusters);
+        PreflopClusterMapper preflopClusterMapper = new PreflopClusterMapper(preflopClusters);
 
         for (GenericState state : prefFopStates) {
             PrintWriter writer = createLogWriter(state);
-            StateNode value = new StateNode(state, preflopHoleReader, equityRepository, writer);
+            StateNode value = new StateNode(state, preflopClusterMapper, equityRepository, writer);
             preflop.addNode(value);
         }
 
@@ -51,18 +51,18 @@ public class StateSetFactory {
         if (street == Street.FLOP) {
             List<FlopCluster> flopClusters = clusterRepository.flop();
 
-            FlopHoleReader flopHoleReader = new FlopHoleReader(flopClusters);
-            return new StateNode(state, flopHoleReader, equityRepository, writer);
+            FlopClusterMapper flopClusterMapper = new FlopClusterMapper(flopClusters);
+            return new StateNode(state, flopClusterMapper, equityRepository, writer);
         } else if (street == Street.TURN) {
             List<TurnCluster> turnClusters = clusterRepository.turn();
 
-            TurnHoleReader flopHoleReader = new TurnHoleReader(turnClusters);
+            TurnClusterMapper flopHoleReader = new TurnClusterMapper(turnClusters);
             return new StateNode(state, flopHoleReader, equityRepository, writer);
         } else if (street == Street.RIVER) {
             List<RiverCluster> riverClusters = clusterRepository.river();
 
-            RiverHoleClusterer riverHoleClusterer = new RiverHoleClusterer(riverClusters);
-            return new StateNode(state, riverHoleClusterer, equityRepository, writer);
+            RiverClusterMapper riverClusterMapper = new RiverClusterMapper(riverClusters);
+            return new StateNode(state, riverClusterMapper, equityRepository, writer);
         } else {
             throw new IllegalArgumentException("No bucketmapping for " + street);
         }

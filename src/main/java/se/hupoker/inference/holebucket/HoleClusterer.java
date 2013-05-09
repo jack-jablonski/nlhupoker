@@ -19,7 +19,8 @@ public interface HoleClusterer {
     public HoleCluster getClusterUniverse(GenericState descriptor);
 
     /**
-     * Complete information for mapping to a hole card cluster.
+     * Complete information for mapping to a hole card cluster. A function that maps every HoleCards
+     * (given the board) onto ClusterUniverse.
      *
      * @param equityRepository
      * @param board
