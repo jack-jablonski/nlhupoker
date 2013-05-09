@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 public class StreetTest {
     @Test(expected = RuntimeException.class)
-    public void nextStreetIsNull() {
+    public void nextStreetOnLastStreetThrows() {
         Street next = Street.RIVER.next();
     }
 }

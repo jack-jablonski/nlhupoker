@@ -1,6 +1,8 @@
 package se.hupoker.inference.tree;
 
 import se.hupoker.cards.CardSet;
+import se.hupoker.cards.handeval.EquityMatrix;
+import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.common.Predicates;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
@@ -11,6 +13,7 @@ import se.hupoker.inference.states.PathElement;
 import se.hupoker.inference.states.GenericState;
 
 import java.io.PrintWriter;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
@@ -36,20 +39,32 @@ public class StateNode {
      */
     private final HoleClusterer holeClusterer;
     private final HoleCluster holeClusters;
+    private final EquityRepository equityRepository;
     private final PrintWriter writer;
 
-    protected StateNode(GenericState state, HoleClusterer holeClusterer, PrintWriter writer) {
-        // TODO: Should clone, since GenericState is mutable because of yamlbeans
+    protected StateNode(GenericState state, HoleClusterer holeClusterer, EquityRepository equityRepository, PrintWriter writer) {
         this.center = state;
         this.holeClusterer = holeClusterer;
+        this.equityRepository = equityRepository;
         this.writer = writer;
 
+        // TODO: nasty
         this.holeClusters = holeClusterer.getHoleClusters(state);
     }
 
     protected void setChildLink(StreetStateSet childLevel) {
         checkState(getCenter().hasChild());
         child = childLevel;
+    }
+
+    /**
+     * TODO: Could use caching of the clustering per board
+     *
+     * @param board The board to cluster the holecards on.
+     */
+    private void getBucketMapping(CardSet board) {
+        Map<HoleCards, Integer> map = holeClusterer.getHoleCluster(equityRepository, board);
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -60,9 +75,10 @@ public class StateNode {
      * @return The distribution of actions.
      */
     protected ActionDistribution getDistribution(CardSet board, HoleCards hole) {
-        int index = holeClusterer.getHoleClusterIndex(board, hole);
+//        int index = holeClusterer.getHoleClusterIndex(board, hole);
+        throw new UnsupportedOperationException();
 
-        return holeClusters.get(index);
+//        return holeClusters.get(index);
     }
 
     protected boolean isCompareable(PathElement elem) {

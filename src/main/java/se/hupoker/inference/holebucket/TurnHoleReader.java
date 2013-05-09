@@ -2,14 +2,15 @@ package se.hupoker.inference.holebucket;
 
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.handeval.EquityMatrix;
+import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;
-import se.hupoker.lut.LutKey;
-import se.hupoker.lut.TurnTable;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -19,15 +20,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 public final class TurnHoleReader implements HoleClusterer {
 	private final List<TurnCluster> tupleList;
 
-	private final TurnTable hsTable;
-	private final TurnTable ppotTable;
-	private final TurnTable npotTable;
-
-	public TurnHoleReader(List<TurnCluster> turnClusters, TurnTable hsTable, TurnTable ppotTable, TurnTable npotTable) {
+	public TurnHoleReader(List<TurnCluster> turnClusters) {
         this.tupleList = turnClusters;
-		this.hsTable = hsTable;
-        this.ppotTable = ppotTable;
-        this.npotTable = npotTable;
 	}
 
     /**
@@ -52,38 +46,31 @@ public final class TurnHoleReader implements HoleClusterer {
 	}
 
     @Override
-    public int getHoleClusterIndex(CardSet board, HoleCards hole) {
+    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 4);
 
-        final LutKey key = new LutKey(board, hole);
-        float hs = hsTable.lookupOne(key);
-        float ppot = ppotTable.lookupOne(key);
-        float npot = npotTable.lookupOne(key);
-
-        HoleTuple tp = new HoleTuple(hs, ppot, npot);
-
-        return getClosest(tp);
+        throw new UnsupportedOperationException();
     }
 
     /**
      * @param otherTuple
      * @return Closest bucket in HoleTuple terms.
      */
-    private int getClosest(HoleTuple otherTuple) {
-        int minIndex = 0;
-        double minDistance = Double.MAX_VALUE;
-
-        for (int i=0; i < tupleList.size(); i++) {
-            HoleTuple tuple = tupleList.get(i);
-
-            double dist = otherTuple.getDistance(tuple);
-
-            if (dist < minDistance) {
-                minDistance = dist;
-                minIndex = i;
-            }
-        }
-
-        return minIndex;
-    }
+//    private int getClosest(HoleTuple otherTuple) {
+//        int minIndex = 0;
+//        double minDistance = Double.MAX_VALUE;
+//
+//        for (int i=0; i < tupleList.size(); i++) {
+//            HoleTuple tuple = tupleList.get(i);
+//
+//            double dist = otherTuple.getDistance(tuple);
+//
+//            if (dist < minDistance) {
+//                minDistance = dist;
+//                minIndex = i;
+//            }
+//        }
+//
+//        return minIndex;
+//    }
 }

@@ -2,14 +2,15 @@ package se.hupoker.inference.holebucket;
 
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.handeval.EquityMatrix;
+import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;
-import se.hupoker.lut.FlopTable;
-import se.hupoker.lut.LutKey;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -19,15 +20,9 @@ import static com.google.common.base.Preconditions.checkArgument;
   */
 public class FlopHoleReader implements HoleClusterer {
 	private final List<FlopCluster> flopClusters;
-	private final FlopTable hsTable;
-	private final FlopTable ppotTable;
-	private final FlopTable npotTable;
 
-	public FlopHoleReader(List<FlopCluster> flopClusters, FlopTable hsTable, FlopTable ppotTable, FlopTable npotTable) {
+	public FlopHoleReader(List<FlopCluster> flopClusters) {
 		this.flopClusters = flopClusters;
-        this.hsTable = hsTable;
-        this.ppotTable = ppotTable;
-        this.npotTable = npotTable;
 	}
 
     @Override
@@ -46,36 +41,30 @@ public class FlopHoleReader implements HoleClusterer {
 	}
 
     @Override
-    public int getHoleClusterIndex(CardSet board, HoleCards hole) {
+    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 3);
-        final LutKey key = new LutKey(board, hole);
-        float hs = hsTable.lookupOne(key);
-        float ppot = ppotTable.lookupOne(key);
-        float npot = npotTable.lookupOne(key);
 
-        HoleTuple tp = new HoleTuple(hs, ppot, npot);
-
-        return getClosest(tp);
+        throw new UnsupportedOperationException();
     }
 
     /**
 	 * @param otherTuple
 	 * @return Closest bucket in HoleTuple terms.
 	 */
-	private int getClosest(HoleTuple otherTuple) {
-		int minIndex = 0;
-		double minDistance = Double.MAX_VALUE;
-
-		for (int i=0; i < flopClusters.size(); i++) {
-			HoleTuple tuple = flopClusters.get(i);
-
-			double dist = otherTuple.getDistance(tuple);
-			if (dist < minDistance) {
-				minDistance = dist;
-				minIndex = i;
-			}
-		}
-
-		return minIndex;
-	}
+//	private int getClosest(HoleTuple otherTuple) {
+//		int minIndex = 0;
+//		double minDistance = Double.MAX_VALUE;
+//
+//		for (int i=0; i < flopClusters.size(); i++) {
+//			HoleTuple tuple = flopClusters.get(i);
+//
+//			double dist = otherTuple.getDistance(tuple);
+//			if (dist < minDistance) {
+//				minDistance = dist;
+//				minIndex = i;
+//			}
+//		}
+//
+//		return minIndex;
+//	}
 }

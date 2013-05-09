@@ -1,7 +1,11 @@
 package se.hupoker.inference.holebucket;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.handeval.EquityMatrix;
+import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;
@@ -37,7 +41,7 @@ public class PreflopHoleReader implements HoleClusterer {
         for (PreflopCluster pf : preflopClusters) {
             EnumSet<ActionDistOptions> options = getOptions(descriptor, pf);
 
-            ActionDistribution ad = ActionDistribution.from(descriptor.getBetting(), pf.range, options);
+            ActionDistribution ad = ActionDistribution.from(descriptor.getBetting(), descriptor.toString(), options);
 
             bm.add(ad);
         }
@@ -57,8 +61,8 @@ public class PreflopHoleReader implements HoleClusterer {
     }
 
     @Override
-    public int getHoleClusterIndex(CardSet board, HoleCards hole) {
-        return map.get(hole);
+    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
+        return ImmutableMap.copyOf(map);
     }
 
     private void verify() {
@@ -66,7 +70,7 @@ public class PreflopHoleReader implements HoleClusterer {
 
         List<HoleCards> allHoles = new ArrayList<>();
         for (PreflopCluster preflop : preflopClusters) {
-            allHoles.addAll(preflop.holes);
+            allHoles.addAll(preflop.getCluster());
         }
 
         checkState(allHoles.size() == HoleCards.TexasCombinations);
@@ -82,11 +86,9 @@ public class PreflopHoleReader implements HoleClusterer {
         for (int index = 0; index < preflopClusters.size(); index++) {
             PreflopCluster bucket = preflopClusters.get(index);
 
-            for (HoleCards hole : bucket.holes) {
+            for (HoleCards hole : bucket.getCluster()) {
                 map.put(hole, index);
             }
         }
     }
-
-
 }

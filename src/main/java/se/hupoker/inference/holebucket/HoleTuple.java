@@ -8,18 +8,14 @@ import java.text.DecimalFormat;
  * @author Alexander Nyberg
  */
 class HoleTuple {
-    private double hs;
-    private double ppot;
-    private double npot;
-
-     // Required because of yamlbeans.
-    public HoleTuple() {
-    }
+    private final double hs;
+    private final double ppot;
+    private final double npot;
 
     public HoleTuple(double hs, double ppot, double npot) {
-        this.setHs(hs);
-        this.setPpot(ppot);
-        this.setNpot(npot);
+        this.hs = hs;
+        this.ppot = ppot;
+        this.npot = npot;
     }
 
     private double f(double a, double b) {
@@ -40,24 +36,11 @@ class HoleTuple {
     public double getHs() {
         return hs;
     }
-
-    public void setHs(double hs) {
-        this.hs = hs;
-    }
-
     public double getPpot() {
         return ppot;
     }
 
-    public void setPpot(double ppot) {
-        this.ppot = ppot;
-    }
-
     public double getNpot() {
         return npot;
-    }
-
-    public void setNpot(double npot) {
-        this.npot = npot;
     }
 }

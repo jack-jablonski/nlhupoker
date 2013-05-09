@@ -2,27 +2,27 @@ package se.hupoker.inference.holebucket;
 
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.handeval.EquityMatrix;
+import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;
-import se.hupoker.lut.LutKey;
-import se.hupoker.lut.RiverTable;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
 * @author Alexander Nyberg
 */
-public class RiverHoleReader implements HoleClusterer {
+public class RiverHoleClusterer implements HoleClusterer {
 	private final List<RiverCluster> buckets;
-    private final RiverTable hsTable;
 
-	public RiverHoleReader(List<RiverCluster> buckets, RiverTable hsTable) {
+	public RiverHoleClusterer(List<RiverCluster> buckets) {
         this.buckets = buckets;
-        this.hsTable = hsTable;
 	}
 
 /*	private EnumSet<ActionDistOptions> getOptions(GenericState descriptor, RiverStructure rs) {
@@ -50,18 +50,19 @@ public class RiverHoleReader implements HoleClusterer {
 	}
 
     @Override
-    public int getHoleClusterIndex(CardSet board, HoleCards hole) {
+    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 5);
-        float hs = hsTable.lookupOne(new LutKey(board, hole));
 
-        for (int i=0; i < buckets.size(); i++) {
-            RiverCluster rp = buckets.get(i);
+        throw new UnsupportedOperationException();
+//
+//        for (int i=0; i < buckets.size(); i++) {
+//            RiverCluster rp = buckets.get(i);
+//
+//            if (hs <= rp.getHs()) {
+//                return i;
+//            }
+//        }
 
-            if (hs <= rp.getHs()) {
-                return i;
-            }
-        }
-
-        throw new IllegalArgumentException("No equity for " + board + " " + hole + "=" + hs);
+//        throw new IllegalArgumentException("No equity for " + board + " " + hole + "=" + hs);
     }
 }

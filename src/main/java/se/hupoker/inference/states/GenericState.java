@@ -7,17 +7,21 @@ import se.hupoker.common.Position;
 import se.hupoker.common.Street;
 
 /**
- *
- * Should be immutable but yamlbeans needs mutability.
+ * Immutable description of state.
  *
  * @author Alexander Nyberg
- *
  */
 public class GenericState {
 	private Street street;
 	private Position position;
     private double iptocall, ooptocall;
-//    private BetPathDescription pathDescription = new BetPathDescription();
+
+    public GenericState(Street street, Position position, double iptocall, double ooptocall) {
+        this.street = street;
+        this.position = position;
+        this.iptocall = iptocall;
+        this.ooptocall = ooptocall;
+    }
 
     public Betting getBetting() {
         if (position == Position.IP) {
@@ -64,16 +68,8 @@ public class GenericState {
         return iptocall;
     }
 
-    public void setIptocall(double ipTocall) {
-        this.iptocall = ipTocall;
-    }
-
     public double getOoptocall() {
         return ooptocall;
-    }
-
-    public void setOoptocall(double oopTocall) {
-        this.ooptocall = oopTocall;
     }
 
 	@Override
@@ -100,10 +96,6 @@ public class GenericState {
 
     public Position getPosition() {
         return position;
-    }
-
-    public void setPosition(Position position) {
-        this.position = position;
     }
 
     public Street getStreet() {
@@ -133,5 +125,15 @@ public class GenericState {
         }
 
         return true;
+    }
+
+    public static class GenericStateBuilder {
+        public Street street;
+        public Position position;
+        public double iptocall, ooptocall;
+
+        public GenericState build() {
+            return new GenericState(street, position, iptocall, ooptocall);
+        }
     }
 }
