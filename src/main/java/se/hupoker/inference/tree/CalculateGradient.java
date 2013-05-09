@@ -8,6 +8,8 @@ import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
 
+import java.util.Map;
+
 /**
  * Update the action distributions according to the gradient.
  *
@@ -21,13 +23,14 @@ class CalculateGradient implements PathEvaluator {
     }
 
     @Override
-    public void evaluateAtNode(StateNode node, HandInfo hand, PathElement elem) {
+    public void evaluateAtNode(StateNode state, HandInfo hand, PathElement elem) {
         CardSet board = hand.getBoard(elem.getStreet());
+        Map<HoleCards, ActionDistribution> actionDistributionMap = state.getDistribution(board);
         Gradient grad = gradients.get(elem.getPosition());
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution actionDist = node.getDistribution(board, hole);
+            ActionDistribution actionDist = actionDistributionMap.get(board);
 
 			/**
 			 * Core update

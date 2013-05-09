@@ -10,6 +10,8 @@ import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
 import se.hupoker.inference.vectors.HoleDistribution;
 
+import java.util.Map;
+
 /**
  *
  * Find the log likelihood of seeing the given hand.
@@ -56,6 +58,7 @@ class HandLikelihood implements PathEvaluator {
      */
     private double findActionProbability(StateNode state, HandInfo hand, HoleDistribution hd, PathElement elem) {
         CardSet board = hand.getBoard(elem.getStreet());
+        Map<HoleCards, ActionDistribution> actionDistributionMap = state.getDistribution(board);
         double sum = 0;
 
 		/*
@@ -63,7 +66,7 @@ class HandLikelihood implements PathEvaluator {
 		 */
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution dist = state.getDistribution(board, hole);
+            ActionDistribution dist = actionDistributionMap.get(hole);
 
             double cardprob = hd.get(hole.ordinal()) * dist.getProbability(elem.getAction());
             sum += cardprob;
@@ -80,10 +83,11 @@ class HandLikelihood implements PathEvaluator {
      */
     private void updateHoleDistribution(StateNode state, HandInfo hand, HoleDistribution hd, PathElement elem) {
         CardSet board = hand.getBoard(elem.getStreet());
+        Map<HoleCards, ActionDistribution> actionDistributionMap = state.getDistribution(board);
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution dist = state.getDistribution(board, hole);
+            ActionDistribution dist = actionDistributionMap.get(hole);
 
             /**
              *

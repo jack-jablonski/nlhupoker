@@ -1,7 +1,6 @@
 package se.hupoker.inference.tree;
 
 import se.hupoker.cards.CardSet;
-import se.hupoker.cards.handeval.EquityMatrix;
 import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.common.Predicates;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
@@ -13,6 +12,7 @@ import se.hupoker.inference.states.PathElement;
 import se.hupoker.inference.states.GenericState;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -49,7 +49,7 @@ public class StateNode {
         this.writer = writer;
 
         // TODO: nasty
-        this.holeClusters = holeClusterer.getHoleClusters(state);
+        this.holeClusters = holeClusterer.getClusterUniverse(state);
     }
 
     protected void setChildLink(StreetStateSet childLevel) {
@@ -63,22 +63,27 @@ public class StateNode {
      * @param board The board to cluster the holecards on.
      */
     private void getBucketMapping(CardSet board) {
-        Map<HoleCards, Integer> map = holeClusterer.getHoleCluster(equityRepository, board);
+        Map<HoleCards, Integer> map = holeClusterer.getClustering(equityRepository, board);
         throw new UnsupportedOperationException();
     }
 
     /**
-     * TODO: Should be f: Board -> Map<HoleCards, ActionDistribution> instead of retrieving individual HoleCards
-     *
-     * @param board
-     * @param hole
+     * @param board The board we want to cluster the holecards of
      * @return The distribution of actions.
      */
-    protected ActionDistribution getDistribution(CardSet board, HoleCards hole) {
-//        int index = holeClusterer.getHoleClusterIndex(board, hole);
-        throw new UnsupportedOperationException();
+    protected Map<HoleCards, ActionDistribution> getDistribution(CardSet board) {
+        Map<HoleCards, Integer> clusterMap = holeClusterer.getClustering(equityRepository, board);
 
-//        return holeClusters.get(index);
+        Map<HoleCards, ActionDistribution> actionMap = new HashMap<>();
+        for (HoleCards cards : HoleCards.allOf()) {
+            if (clusterMap.containsKey(cards)) {
+                int clusterIndex = clusterMap.get(cards);
+
+                actionMap.put(cards, holeClusters.get(clusterIndex));
+            }
+        }
+
+        return actionMap;
     }
 
     protected boolean isCompareable(PathElement elem) {

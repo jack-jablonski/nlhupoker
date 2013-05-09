@@ -26,7 +26,7 @@ public class FlopHoleReader implements HoleClusterer {
 	}
 
     @Override
-	public HoleCluster getHoleClusters(GenericState descriptor) {
+	public HoleCluster getClusterUniverse(GenericState descriptor) {
 		HoleCluster bm = new HoleCluster();
 
 		for (FlopCluster tuple : flopClusters) {
@@ -41,7 +41,7 @@ public class FlopHoleReader implements HoleClusterer {
 	}
 
     @Override
-    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
+    public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 3);
 
         throw new UnsupportedOperationException();

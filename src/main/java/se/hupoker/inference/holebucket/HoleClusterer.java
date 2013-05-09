@@ -16,14 +16,14 @@ public interface HoleClusterer {
      * @param descriptor
      * @return The distribution for this node.
      */
-    public HoleCluster getHoleClusters(GenericState descriptor);
+    public HoleCluster getClusterUniverse(GenericState descriptor);
 
     /**
      * Complete information for mapping to a hole card cluster.
      *
      * @param equityRepository
      * @param board
-     * @return Map describing which cluster each hole holecards belongs to.
+     * @return Map describing which cluster each hole holecards belongs to. If holeCards don't exist map to null.
      */
-    Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board);
+    Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board);
 }

@@ -35,7 +35,7 @@ public class PreflopHoleReader implements HoleClusterer {
      * @return
      */
     @Override
-    public HoleCluster getHoleClusters(GenericState descriptor) {
+    public HoleCluster getClusterUniverse(GenericState descriptor) {
         HoleCluster bm = new HoleCluster();
 
         for (PreflopCluster pf : preflopClusters) {
@@ -61,7 +61,7 @@ public class PreflopHoleReader implements HoleClusterer {
     }
 
     @Override
-    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
+    public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
         return ImmutableMap.copyOf(map);
     }
 

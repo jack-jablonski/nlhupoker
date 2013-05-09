@@ -2,14 +2,12 @@ package se.hupoker.inference.holebucket;
 
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.cards.handeval.EquityMatrix;
 import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +32,7 @@ public class RiverHoleClusterer implements HoleClusterer {
 	}*/
 
     @Override
-	public HoleCluster getHoleClusters(GenericState descriptor) {
+	public HoleCluster getClusterUniverse(GenericState descriptor) {
 		HoleCluster bm = new HoleCluster();
 
 		for (RiverCluster river : buckets) {
@@ -50,7 +48,7 @@ public class RiverHoleClusterer implements HoleClusterer {
 	}
 
     @Override
-    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
+    public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 5);
 
         throw new UnsupportedOperationException();

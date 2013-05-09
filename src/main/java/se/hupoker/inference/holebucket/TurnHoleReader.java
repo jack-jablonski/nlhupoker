@@ -30,7 +30,7 @@ public final class TurnHoleReader implements HoleClusterer {
      * @return Set of action distributions corresponding to each node state.
      */
     @Override
-	public HoleCluster getHoleClusters(GenericState descriptor) {
+	public HoleCluster getClusterUniverse(GenericState descriptor) {
 		HoleCluster bm = new HoleCluster();
 
 		for (TurnCluster tuple : tupleList) {
@@ -46,7 +46,7 @@ public final class TurnHoleReader implements HoleClusterer {
 	}
 
     @Override
-    public Map<HoleCards, Integer> getHoleCluster(EquityRepository equityRepository, CardSet board) {
+    public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
         checkArgument(board.size() == 4);
 
         throw new UnsupportedOperationException();

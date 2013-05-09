@@ -9,6 +9,8 @@ import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;
 
+import java.util.Map;
+
 /**
  * @author Alexander Nyberg
  */
@@ -30,18 +32,19 @@ class BuildGradient implements PathEvaluator {
     /**
      * Update the gradient according to the actions taken
      *
-     * @param node Where in the tree we are.
+     * @param state Where in the tree we are.
      * @param hand The current poker hand.
      * @param elem Describes the action.
      */
     @Override
-    public void evaluateAtNode(StateNode node, HandInfo hand, PathElement elem) {
-        Gradient grad = gradients.get(elem.getPosition());
+    public void evaluateAtNode(StateNode state, HandInfo hand, PathElement elem) {
         CardSet board = hand.getBoard(elem.getStreet());
+        Map<HoleCards, ActionDistribution> actionDistributionMap = state.getDistribution(board);
+        Gradient grad = gradients.get(elem.getPosition());
 
         HolePossible holePossible = hand.getHolePossible(elem.getPosition());
         for (HoleCards hole : holePossible) {
-            ActionDistribution actionDist = node.getDistribution(board, hole);
+            ActionDistribution actionDist = actionDistributionMap.get(hole);
 
             /**
              * Core update
