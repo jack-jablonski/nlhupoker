@@ -26,7 +26,7 @@ public class Serializer {
     public <T> T deserialize(Class<T> clazz, String fileLocation) {
         try{
             InputStream file = new FileInputStream(fileLocation);
-            BufferedInputStream buffer = new BufferedInputStream( file );
+            BufferedInputStream buffer = new BufferedInputStream(file);
             try (ObjectInput input = new ObjectInputStream(buffer)) {
                 return clazz.cast(input.readObject());
             }

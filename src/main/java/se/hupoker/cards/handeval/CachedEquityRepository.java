@@ -7,8 +7,6 @@ import se.hupoker.cards.CardSet;
 import se.hupoker.common.Serializer;
 import se.hupoker.common.Street;
 
-import java.util.concurrent.ExecutionException;
-
 /**
  * Double-cached repository: First in memory, then on disk.
  *
@@ -17,6 +15,11 @@ import java.util.concurrent.ExecutionException;
 public class CachedEquityRepository implements EquityRepository {
     private final Serializer serializer;
     private final String equityDirectory;
+
+    public CachedEquityRepository(Serializer serializer, String equityDirectory) {
+        this.serializer = serializer;
+        this.equityDirectory = equityDirectory;
+    }
 
     private final CacheLoader<CardSet, EquityMatrix> cacheLoader = new CacheLoader<CardSet, EquityMatrix>() {
         @Override
@@ -36,13 +39,8 @@ public class CachedEquityRepository implements EquityRepository {
     };
 
     private final LoadingCache<CardSet, EquityMatrix> cache = CacheBuilder.newBuilder()
-            .maximumSize(10)
+            .weakValues()
             .build(cacheLoader);
-
-    public CachedEquityRepository(Serializer serializer, String equityDirectory) {
-        this.serializer = serializer;
-        this.equityDirectory = equityDirectory;
-    }
 
     private String getFileLocation(CardSet board) {
         return equityDirectory + "/" + board.toString() + ".ser";

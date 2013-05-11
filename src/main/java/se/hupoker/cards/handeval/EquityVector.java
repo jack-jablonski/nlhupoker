@@ -12,15 +12,14 @@ import java.util.Arrays;
 
 
 /**
- * 
  * @author Alexander Nyberg
- *
  */
 final public class EquityVector  {
     private final EquityMeasure measure = new EquityMeasure();
     private final EquityAdapter adapter = new EquityAdapter();
-	private final double ahead[] = new double[HoleCards.TexasCombinations];
-	private final double equities[] = new double[HoleCards.TexasCombinations];
+    // Maybe not use this at all.
+	private final float ahead[] = new float[HoleCards.TexasCombinations];
+	private final float equities[] = new float[HoleCards.TexasCombinations];
 
 	public EquityVector() {
 		Arrays.fill(ahead, EquityMeasure.BADEQUITY);
@@ -32,15 +31,15 @@ final public class EquityVector  {
 	}
 	
 	public double getHS() {
-		return measure.getHS(ahead);
+		return measure.getApproximateHs(equities);
 	}
 	
 	public double getPPOT() {
-		return measure.getPPOT(ahead, equities);
+		return measure.getApproximatePpot(equities);
 	}
 	
 	public double getNPOT() {
-		return measure.getNPOT(ahead, equities);
+		return measure.getApproximateNpot(equities);
 	}	
 
 	/**
@@ -68,8 +67,8 @@ final public class EquityVector  {
 				equitySum = adapter.iterateBoards(remainingCards, newDeck, board, myHole, opHole);
 			}
 
-            ahead[opHole.ordinal()] = adapter.get(board, myHole, opHole);
-			equities[opHole.ordinal()] = equitySum;
+            ahead[opHole.ordinal()] = (float) adapter.get(board, myHole, opHole);
+			equities[opHole.ordinal()] = (float) equitySum;
 		}
 	}
 

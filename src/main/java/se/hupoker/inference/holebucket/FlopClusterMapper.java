@@ -60,7 +60,7 @@ public class FlopClusterMapper implements HoleClusterer {
                 continue;
             }
 
-            HoleTuple holeTuple = new HoleTuple(matrix.getHs(hole), matrix.getPpot(hole), matrix.getNpot(hole));
+            HoleTuple holeTuple = new HoleTuple(matrix.getApproximateHs(hole), matrix.getApproximatePpot(hole), matrix.getApproximateNpot(hole));
             map.put(hole, getClosest(holeTuple));
         }
 

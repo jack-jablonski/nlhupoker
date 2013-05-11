@@ -13,12 +13,6 @@ abstract class RelationManager {
 
     protected static RelationManager factory(CardSet board) {
         // More clever than previously thought!
-//        if (board.size() == 5) {
-//            return new RiverHoleRelation(board);
-//        } else {
-//            return new StandardHoleRelation(board);
-//        }
-
         return new StandardHoleRelation(board);
     }
 

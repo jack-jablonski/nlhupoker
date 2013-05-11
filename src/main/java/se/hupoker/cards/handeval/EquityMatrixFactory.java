@@ -54,19 +54,17 @@ public class EquityMatrixFactory {
         return equityTable.getEquities()[myHole.ordinal()][opHole.ordinal()];
     }
 
-    private void setMatrixValue(double matrix[][], HoleCards myHole, HoleCards opHole, double value) {
+    private void setMatrixValue(float matrix[][], HoleCards myHole, HoleCards opHole, double value) {
         checkArgument(!Double.isNaN(value));
 
-        matrix[myHole.ordinal()][opHole.ordinal()] = value;
-        matrix[opHole.ordinal()][myHole.ordinal()] = (1 - value);
+        float approximated = (float) value;
+
+        matrix[myHole.ordinal()][opHole.ordinal()] = approximated;
+        matrix[opHole.ordinal()][myHole.ordinal()] = (1 - approximated);
     }
 
     private void setEquityPair(HoleCards myHole, HoleCards opHole, double equity) {
         setMatrixValue(equityTable.getEquities(), myHole, opHole, equity);
-    }
-
-    private void setAheadPair(HoleCards myHole, HoleCards opHole, double now) {
-        setMatrixValue(equityTable.getAhead(), myHole, opHole, now);
     }
 
     /**
@@ -97,12 +95,6 @@ public class EquityMatrixFactory {
         }
 
         setEquityPair(myHole, opHole, equity);
-
-        // For flop & turn. Probably too fast to bother with separate cache.
-        if (remainingCards > 0) {
-            double now = equityAdapter.get(board, myHole, opHole);
-            setAheadPair(myHole, opHole, now);
-        }
     }
 
     /**
