@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.cache;
 
 import se.hupoker.cards.RankIndex;
 
@@ -7,6 +7,7 @@ import se.hupoker.cards.RankIndex;
  *
  * @author Alexander Nyberg
  */
+@Deprecated
 class HoleRelation {
     private final int rank;
     private final FlushConfiguration flush;

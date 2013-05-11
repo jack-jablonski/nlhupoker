@@ -1,5 +1,6 @@
 package se.hupoker.cards.boardenumerator;
 
+import se.hupoker.cards.isomorphisms.BoardTransformer;
 import se.hupoker.common.Street;
 import se.hupoker.cards.CardSet;
 
@@ -11,11 +12,11 @@ import java.util.Set;
  *
  * @author Alexander Nyberg
  */
-class IsomorphicBoard {
+class IsomorphicBoardCache {
     private final Set<CardSet> cache = new HashSet<>();
     private final BoardTransformer boardTransformer;
 
-    public IsomorphicBoard(Street street) {
+    public IsomorphicBoardCache(Street street) {
         boardTransformer = BoardTransformer.from(street);
     }
 

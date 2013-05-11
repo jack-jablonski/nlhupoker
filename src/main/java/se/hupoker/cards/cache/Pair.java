@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.cache;
 
 /**
  * 

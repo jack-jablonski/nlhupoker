@@ -11,6 +11,7 @@ import org.paukov.combinatorics.ICombinatoricsVector;
  *
  * @author Alexander Nyberg
  */
+@Deprecated
 public class RankIndex {
     /**
      * Multichoose(13,2)

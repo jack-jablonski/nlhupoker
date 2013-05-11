@@ -16,14 +16,14 @@ import static org.junit.Assert.assertTrue;
 /**
  * @author Alexander Nyberg
  */
-public class IsomorphicFlopTest {
-    private IsomorphicBoard isomorphicBoard;
+public class IsomorphicBoardCacheFlopTest {
+    private IsomorphicBoardCache isomorphicBoardCache;
     private final int NumberOfCards = Street.FLOP.numberOfBoardCards();
     private final int NumberOfIsomorphicBoards = 1833;
 
     @Before
     public void setUp() throws Exception {
-        isomorphicBoard = new IsomorphicBoard(Street.FLOP);
+        isomorphicBoardCache = new IsomorphicBoardCache(Street.FLOP);
     }
 
     @Test
@@ -31,12 +31,12 @@ public class IsomorphicFlopTest {
         CardSet board = CardSet.from("2c3d4h");
         CardSet isoBoard = CardSet.from("2d3h4s");
 
-        assertFalse(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(isoBoard));
-        assertTrue(isomorphicBoard.seenAndAddBoard(CardSet.from("4d3h2s")));
-        assertTrue(isomorphicBoard.seenAndAddBoard(CardSet.from("3s4h2d")));
-        assertFalse(isomorphicBoard.seenAndAddBoard(CardSet.from("4s3s2d")));
+        assertFalse(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(isoBoard));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(CardSet.from("4d3h2s")));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(CardSet.from("3s4h2d")));
+        assertFalse(isomorphicBoardCache.seenAndAddBoard(CardSet.from("4s3s2d")));
     }
 
     @Test
@@ -44,9 +44,9 @@ public class IsomorphicFlopTest {
         CardSet board = CardSet.from("5c9dAd");
         CardSet isomBoard = CardSet.from("Ah5s9h");
 
-        assertFalse(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(isomBoard));
+        assertFalse(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(isomBoard));
     }
 
     @Test
@@ -54,9 +54,9 @@ public class IsomorphicFlopTest {
         CardSet board = CardSet.from("2c3c4c");
         CardSet isoBoard = CardSet.from("2d3d4d");
 
-        assertFalse(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(board));
-        assertTrue(isomorphicBoard.seenAndAddBoard(isoBoard));
+        assertFalse(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(board));
+        assertTrue(isomorphicBoardCache.seenAndAddBoard(isoBoard));
     }
     @Test
     public void testNumberOfBoards() {
@@ -66,9 +66,9 @@ public class IsomorphicFlopTest {
         for (ICombinatoricsVector<Card> comb : boardGenerator) {
             CardSet board = new CardSet(comb.getVector());
 
-            isomorphicBoard.seenAndAddBoard(board);
+            isomorphicBoardCache.seenAndAddBoard(board);
         }
 
-        assertEquals(NumberOfIsomorphicBoards, isomorphicBoard.size());
+        assertEquals(NumberOfIsomorphicBoards, isomorphicBoardCache.size());
     }
 }

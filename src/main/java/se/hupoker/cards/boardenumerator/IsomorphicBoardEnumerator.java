@@ -15,14 +15,14 @@ import se.hupoker.common.Street;
 public class IsomorphicBoardEnumerator {
     private final BoardRunner boardRunner;
     private final Street street;
-    private final IsomorphicBoard isomorphicBoard;
+    private final IsomorphicBoardCache isomorphicBoardCache;
     // Statistics
     private int numEvaluated, numSkipped;
 
     public IsomorphicBoardEnumerator(BoardRunner runner, Street street) {
         this.boardRunner = runner;
         this.street = street;
-        this.isomorphicBoard = new IsomorphicBoard(street);
+        this.isomorphicBoardCache = new IsomorphicBoardCache(street);
     }
 
     /**
@@ -38,7 +38,7 @@ public class IsomorphicBoardEnumerator {
         for (ICombinatoricsVector<Card> comb : boardGenerator) {
             CardSet board = new CardSet(comb.getVector());
 
-            if (!isomorphicBoard.seenAndAddBoard(board)) {
+            if (!isomorphicBoardCache.seenAndAddBoard(board)) {
                 numEvaluated++;
                 boardRunner.evaluateBoard(board);
             } else {

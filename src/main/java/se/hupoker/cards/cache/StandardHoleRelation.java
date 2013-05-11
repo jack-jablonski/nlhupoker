@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.cache;
 
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.EnumCounter;
@@ -13,6 +13,7 @@ import se.hupoker.cards.Suit;
  * @author Alexander Nyberg
  *
  */
+@Deprecated
 class StandardHoleRelation extends RelationManager {
     private final CardSet board;
     private final EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);

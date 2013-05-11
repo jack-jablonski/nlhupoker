@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.cache;
 
 import com.google.common.base.Optional;
 import se.hupoker.cards.HoleCards;
@@ -7,9 +7,7 @@ import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 /**
-* 
 * @author Alexander Nyberg
-*
 */
 class SymmetricRelationTable {
 	private final Table<HoleRelation, HoleRelation, Pair<HoleCards>> table;

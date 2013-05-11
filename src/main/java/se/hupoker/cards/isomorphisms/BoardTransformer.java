@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardenumerator;
+package se.hupoker.cards.isomorphisms;
 
 import com.google.common.collect.ImmutableSortedSet;
 import se.hupoker.cards.CardSet;
@@ -10,17 +10,14 @@ import java.util.SortedSet;
 import static se.hupoker.common.Street.RIVER;
 
 /**
- *
  * @author Alexander Nyberg
  */
-abstract class BoardTransformer {
+public abstract class BoardTransformer {
     /**
-     * Static factory according to (flop,turn) or river.
-     *
-     * @param street
-     * @return
+     * @param street (flop,turn) or river.
+     * @return The transformer for the street
      */
-    protected static BoardTransformer from(Street street) {
+    public static BoardTransformer from(Street street) {
         if (street.equals(RIVER)) {
             return new RiverBoardTransformer();
         } else {
@@ -33,9 +30,8 @@ abstract class BoardTransformer {
     }
 
     /**
-     *
-     * @param board
-     * @return Isomorphic board.
+     * @param board Arbitrary input.
+     * @return The isomorphic equivalent of 'board'
      */
-    abstract CardSet getIsomorphic(CardSet board);
+    public abstract CardSet getIsomorphic(CardSet board);
 }

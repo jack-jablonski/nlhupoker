@@ -4,7 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import org.junit.Test;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.cards.boardisomorphisms.SingleManager;
+import se.hupoker.cards.cache.SingleManager;
 
 import java.util.Collection;
 

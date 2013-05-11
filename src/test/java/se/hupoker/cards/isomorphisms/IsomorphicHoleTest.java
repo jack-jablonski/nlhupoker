@@ -1,9 +1,10 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.isomorphisms;
 
 import com.google.common.math.IntMath;
 import org.junit.Test;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.isomorphisms.IsomorphicHole;
 
 import java.util.HashSet;
 import java.util.Set;

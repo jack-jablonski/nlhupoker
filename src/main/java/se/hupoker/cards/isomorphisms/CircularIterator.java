@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardenumerator;
+package se.hupoker.cards.isomorphisms;
 
 import java.util.Iterator;
 import java.util.SortedSet;

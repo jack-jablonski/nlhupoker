@@ -1,8 +1,8 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.isomorphisms;
 
 import com.google.common.collect.ImmutableSortedSet;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.cards.boardenumerator.CircularIterator;
+import se.hupoker.cards.isomorphisms.CircularIterator;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.Suit;

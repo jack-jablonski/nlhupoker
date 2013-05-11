@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardisomorphisms;
+package se.hupoker.cards.cache;
 
 import se.hupoker.cards.*;
 import se.hupoker.common.EnumCounter;
@@ -8,6 +8,7 @@ import se.hupoker.common.EnumCounter;
  * @author Alexander Nyberg
  *
  */
+@Deprecated
 public class RiverHoleRelation extends RelationManager {
     private final EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);
     private final static RankIndex rankMap = new RankIndex();

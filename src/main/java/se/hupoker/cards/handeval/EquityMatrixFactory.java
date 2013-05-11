@@ -6,8 +6,8 @@ import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.DeckSet;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.cards.boardisomorphisms.Pair;
-import se.hupoker.cards.boardisomorphisms.PairManager;
+import se.hupoker.cards.cache.Pair;
+import se.hupoker.cards.cache.PairManager;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

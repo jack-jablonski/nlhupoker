@@ -1,4 +1,4 @@
-package se.hupoker.cards.boardenumerator;
+package se.hupoker.cards.isomorphisms;
 
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
