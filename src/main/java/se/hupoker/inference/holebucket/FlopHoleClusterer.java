@@ -17,26 +17,21 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
-* @author Alexander Nyberg
-*/
-public final class TurnClusterMapper implements HoleClusterer {
-	private final List<TurnCluster> tupleList;
+ * 
+ * @author Alexander Nyberg
+  */
+public class FlopHoleClusterer implements HoleClusterer {
+	private final List<FlopCluster> flopClusters;
 
-	public TurnClusterMapper(List<TurnCluster> turnClusters) {
-        this.tupleList = turnClusters;
+	public FlopHoleClusterer(List<FlopCluster> flopClusters) {
+		this.flopClusters = flopClusters;
 	}
 
-    /**
-     *
-     * @param descriptor
-     * @return Set of action distributions corresponding to each node state.
-     */
     @Override
 	public HoleCluster getClusterUniverse(GenericState descriptor) {
 		HoleCluster bm = new HoleCluster();
 
-		for (TurnCluster tuple : tupleList) {
-//			EnumSet<ActionDistOptions> options = getOptions(descriptor, tuple);
+		for (FlopCluster tuple : flopClusters) {
 			EnumSet<ActionDistOptions> options = ActionDistOptions.empty();
 
 			ActionDistribution ad = ActionDistribution.from(descriptor.getBetting(), tuple.toString(), options);
@@ -47,11 +42,18 @@ public final class TurnClusterMapper implements HoleClusterer {
 		return bm;
 	}
 
+    /**
+     * This needs a lot of love.
+     *
+     * @param equityRepository
+     * @param board
+     * @return Mapping of HoleCards -> Cluster key
+     */
     @Override
     public Map<HoleCards, Integer> getClustering(EquityRepository equityRepository, CardSet board) {
-        checkArgument(board.size() == 4);
+        checkArgument(board.size() == 3);
         Map<HoleCards, Integer> map = new HashMap<>();
-        EquityMatrix matrix = equityRepository.get(Street.TURN, board);
+        EquityMatrix matrix = equityRepository.get(Street.FLOP, board);
 
         for (HoleCards hole : HoleCards.allOf()) {
             if (board.containsAny(hole)) {
@@ -66,24 +68,23 @@ public final class TurnClusterMapper implements HoleClusterer {
     }
 
     /**
-     * @param otherTuple
-     * @return Closest bucket in HoleTuple terms.
-     */
-    private int getClosest(HoleTuple otherTuple) {
-        int minIndex = 0;
-        double minDistance = Double.MAX_VALUE;
+	 * @param otherTuple
+	 * @return Closest bucket in HoleTuple terms.
+	 */
+	private int getClosest(HoleTuple otherTuple) {
+		int minIndex = 0;
+		double minDistance = Double.MAX_VALUE;
 
-        for (int i=0; i < tupleList.size(); i++) {
-            HoleTuple tuple = tupleList.get(i).getHoleTuple();
+		for (int i=0; i < flopClusters.size(); i++) {
+			HoleTuple tuple = flopClusters.get(i).getHoleTuple();
 
-            double dist = otherTuple.getDistance(tuple);
+			double dist = otherTuple.getDistance(tuple);
+			if (dist < minDistance) {
+				minDistance = dist;
+				minIndex = i;
+			}
+		}
 
-            if (dist < minDistance) {
-                minDistance = dist;
-                minIndex = i;
-            }
-        }
-
-        return minIndex;
-    }
+		return minIndex;
+	}
 }

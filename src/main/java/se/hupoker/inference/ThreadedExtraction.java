@@ -53,9 +53,7 @@ public class ThreadedExtraction implements Extraction {
         for (Future<HandInfo> future : futures) {
             try {
                 extracted.add(future.get());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
         }

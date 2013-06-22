@@ -1,22 +1,23 @@
 package se.hupoker.cards.isomorphisms;
 
 import com.google.common.collect.ImmutableSortedSet;
-import se.hupoker.cards.HoleCards;
-import se.hupoker.cards.isomorphisms.CircularIterator;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
+import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.Suit;
 
 import java.util.*;
 
 /**
+ * Responsible for mapping to equivalent hole cards given some board.
+ *
  * @author Alexander Nyberg
  */
-public class IsomorphicHole {
+public class HoleTransform {
     private final CardSet board;
     private final SortedSet<Suit> immutableSuits;
 
-    public IsomorphicHole(CardSet board) {
+    public HoleTransform(CardSet board) {
         this.board = board;
         immutableSuits = ImmutableSortedSet.copyOf(Suit.values());
     }
@@ -67,4 +68,5 @@ public class IsomorphicHole {
 //        System.out.println("Mapped " + original + " -> " + isoCards);
         return isoCards;
     }
+
 }

@@ -12,11 +12,11 @@ import java.util.Set;
  *
  */
 public class SingleManager {
-    private final RelationManager relationManager;
+    private final StandardHoleRelation relationManager;
 	private final Set<HoleRelation> seen = new HashSet<>();
 
 	public SingleManager(CardSet board) {
-        relationManager = RelationManager.factory(board);
+        relationManager = new StandardHoleRelation(board);
 	}
 
     /**

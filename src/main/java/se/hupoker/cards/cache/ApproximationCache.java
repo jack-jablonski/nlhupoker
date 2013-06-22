@@ -10,18 +10,18 @@ import se.hupoker.cards.CardSet;
  * @author Alexander Nyberg
  *
  */ 
-public final class PairManager {
-	private final RelationManager relationManager;
+public class ApproximationCache {
+	private final StandardHoleRelation relationManager;
     private final SymmetricRelationTable cache = new SymmetricRelationTable();
     private int cacheMiss, cacheHit;
 
-	private PairManager(RelationManager relationManager) {
+	private ApproximationCache(StandardHoleRelation relationManager) {
         this.relationManager = relationManager;
 	}
 
-    public static PairManager create(CardSet board) {
-        RelationManager relationManager = RelationManager.factory(board);
-        return new PairManager(relationManager);
+    public static ApproximationCache create(CardSet board) {
+        StandardHoleRelation relationManager = new StandardHoleRelation(board);
+        return new ApproximationCache(relationManager);
     }
 
     /**
@@ -45,7 +45,11 @@ public final class PairManager {
 		}
 	}
 
-    public String getStatistics() {
-        return "Number Hit:" + cacheHit + " number missed:" + cacheMiss;
+    public int getCacheMiss() {
+        return cacheMiss;
+    }
+
+    public int getCacheHit() {
+        return cacheHit;
     }
 }

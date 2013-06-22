@@ -11,7 +11,7 @@ import java.util.Arrays;
 class EquityTable implements Serializable {
     /*
      *  Equities when all cards run out
-     *  TODO: 1) Half size from using float. 2) Half size from get(i,j) = 1 - get(j,i)
+     *  TODO: Half size from get(i,j) = 1 - get(j,i)
      *
      */
     private final float[][] equities = new float[HoleCards.TexasCombinations][HoleCards.TexasCombinations];

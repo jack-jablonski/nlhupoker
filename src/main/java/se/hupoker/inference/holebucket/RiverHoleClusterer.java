@@ -19,10 +19,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
 * @author Alexander Nyberg
 */
-public class RiverClusterMapper implements HoleClusterer {
+public class RiverHoleClusterer implements HoleClusterer {
 	private final List<RiverCluster> buckets;
 
-	public RiverClusterMapper(List<RiverCluster> buckets) {
+	public RiverHoleClusterer(List<RiverCluster> buckets) {
         this.buckets = buckets;
 	}
 

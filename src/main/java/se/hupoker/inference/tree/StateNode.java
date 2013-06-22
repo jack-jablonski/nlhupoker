@@ -1,5 +1,8 @@
 package se.hupoker.inference.tree;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.handeval.EquityRepository;
 import se.hupoker.common.Predicates;
@@ -57,12 +60,26 @@ public class StateNode {
         child = childLevel;
     }
 
+    private final LoadingCache<CardSet, Map<HoleCards, Integer>> cache = CacheBuilder.newBuilder()
+            .weakValues()
+            .build(new CacheLoader<CardSet, Map<HoleCards, Integer>>() {
+                @Override
+                public Map<HoleCards, Integer> load(CardSet board) throws RuntimeException {
+                    return holeClusterer.getClustering(equityRepository, board);
+                }
+            });
+
     /**
      * @param board The board we want to cluster the holecards of
      * @return The distribution of actions.
      */
     protected Map<HoleCards, ActionDistribution> getDistribution(CardSet board) {
-        Map<HoleCards, Integer> clusterMap = holeClusterer.getClustering(equityRepository, board);
+        Map<HoleCards, Integer> clusterMap;
+        if (board == null) {
+            clusterMap = holeClusterer.getClustering(equityRepository, board);
+        } else {
+            clusterMap = cache.getUnchecked(board);
+        }
 
         Map<HoleCards, ActionDistribution> actionMap = new HashMap<>();
         for (HoleCards cards : HoleCards.allOf()) {

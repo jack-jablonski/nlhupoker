@@ -7,6 +7,7 @@ import com.google.common.collect.Table;
 import java.util.Collection;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * An immutable poker card.
@@ -38,6 +39,8 @@ public class Card implements Comparable<Card> {
      * @return Immutable card
      */
     public static Card from(Rank rank, Suit suit) {
+        checkNotNull(rank);
+        checkNotNull(suit);
         return table.get(rank, suit);
     }
 

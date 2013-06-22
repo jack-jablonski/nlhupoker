@@ -18,13 +18,13 @@ class HoleRelation {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof HoleRelation)) {
+    public boolean equals(Object otherObject) {
+        if (!(otherObject instanceof HoleRelation)) {
             return false;
         }
 
-        final HoleRelation otherRelation = (HoleRelation) other;
-        return this.rank == otherRelation.rank && this.flush == otherRelation.flush;
+        final HoleRelation other = (HoleRelation) otherObject;
+        return this.rank == other.rank && this.flush == other.flush;
     }
 
     /**

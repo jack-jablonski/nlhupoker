@@ -14,12 +14,11 @@ import se.hupoker.cards.Suit;
  *
  */
 @Deprecated
-class StandardHoleRelation extends RelationManager {
+class StandardHoleRelation {
     private final CardSet board;
     private final EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);
     private final static RankIndex rankMap = new RankIndex();
 
-    @Override
     public HoleRelation get(HoleCards hole) {
         int ranking = rankMap.get(hole);
         FlushConfiguration flush = getFlushing(hole);

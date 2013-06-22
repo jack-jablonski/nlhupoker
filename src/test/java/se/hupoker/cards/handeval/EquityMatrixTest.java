@@ -18,11 +18,11 @@ import static junit.framework.Assert.assertTrue;
  */
 public class EquityMatrixTest {
 	@Test
-	public void testBuildEquities() {
+	public void testFlopNutEquities() {
 		CardSet board = CardSet.from("9c8h4s");
 
 		System.out.println(board);
-		EquityMatrix me = EquityMatrixFactory.factory(board);
+		EquityMatrix me = EquityMatrixFactory.calculate(board);
 
         HoleCards first = HoleCards.from("9d9h");
         HoleCards second = HoleCards.from("8d8c");
@@ -44,9 +44,13 @@ public class EquityMatrixTest {
          */
         final double hsValue = 0.828282828282828282;
 
-        EquityMatrix me = EquityMatrixFactory.factory(board);
+        EquityMatrix me = EquityMatrixFactory.calculate(board);
 
-        assertEquals(hsValue, me.getAverageEquity(hole));
+        /**
+         * Fails because of how EquityMatrix caches right now.
+         */
+        boolean equal = DoubleMath.equal(hsValue, me.getAverageEquity(hole));
+        assertTrue(equal);
     }
 
 	private CardSet getRandomBoard(int numberOfCards) {
@@ -63,7 +67,7 @@ public class EquityMatrixTest {
             CardSet board = getRandomBoard(numberOfCards);
 
             long start = System.currentTimeMillis();
-            EquityMatrix me = EquityMatrixFactory.factory(board);
+            EquityMatrix me = EquityMatrixFactory.calculate(board);
             long end = System.currentTimeMillis();
 
 //            me.printStatistics();

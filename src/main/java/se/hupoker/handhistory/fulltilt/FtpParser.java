@@ -20,7 +20,7 @@ public class FtpParser {
     /*
     * The different parsing states in a FTP hand.
     */
-	private enum State { Description, Preamble, Actions, Showdown, Done, Error; }
+	private enum State { Description, Preamble, Actions, Showdown, Done, Error }
     private State parseState = State.Description;
 	private final List<HeadsUp> results = new ArrayList<>();
 

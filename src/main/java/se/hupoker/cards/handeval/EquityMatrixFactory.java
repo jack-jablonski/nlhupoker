@@ -6,8 +6,10 @@ import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.DeckSet;
 import se.hupoker.cards.HoleCards;
+import se.hupoker.cards.cache.ApproximationCache;
 import se.hupoker.cards.cache.Pair;
-import se.hupoker.cards.cache.PairManager;
+
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -17,20 +19,20 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class EquityMatrixFactory {
     private final EquityTable equityTable = new EquityTable();
     private final EquityAdapter equityAdapter = new EquityAdapter();
-    private final PairManager pairManager;
+    private final ApproximationCache approximationCache;
 
-    private EquityMatrixFactory(PairManager pairManager) {
-        this.pairManager = pairManager;
+    private EquityMatrixFactory(ApproximationCache approximationCache) {
+        this.approximationCache = approximationCache;
     }
 
     /**
      * @param board The board on which to build holeCards vs. holeCards equities on.
      * @return holeCards vs. holeCards equity matrix
      */
-    public static EquityMatrix factory(CardSet board) {
-        PairManager pairManager = PairManager.create(board);
+    public static EquityMatrix calculate(CardSet board) {
+        ApproximationCache approximationCache = ApproximationCache.create(board);
 
-        EquityMatrixFactory equityMatrixFactory = new EquityMatrixFactory(pairManager);
+        EquityMatrixFactory equityMatrixFactory = new EquityMatrixFactory(approximationCache);
         equityMatrixFactory.buildEquityTable(board);
 
         return new EquityMatrix(equityMatrixFactory.getEquityTable());
@@ -38,10 +40,6 @@ public class EquityMatrixFactory {
 
     private EquityTable getEquityTable() {
         return equityTable;
-    }
-
-    public void printStatistics() {
-        System.out.println(pairManager.getStatistics());
     }
 
     private void buildEquityTable(CardSet board) {
@@ -79,7 +77,7 @@ public class EquityMatrixFactory {
         final int remainingCards = equityAdapter.getNumberOfRemainingCards(board);
         double equity;
 
-        Pair<HoleCards> cached = pairManager.getAndAddCached(myHole, opHole);
+        Pair<HoleCards> cached = approximationCache.getAndAddCached(myHole, opHole);
         if (cached == null) {
             if (remainingCards > 0) {
                 DeckSet newDeck = new DeckSet(deck);
@@ -104,20 +102,14 @@ public class EquityMatrixFactory {
      * @param board
      */
     private void iterateHoleCards(DeckSet deck, CardSet board) {
-        final int[][] inner = {{0, 1, 2, 3}, {0, 2, 1, 3}, {0, 3, 1, 2}};
+        HoleCardCombinations holeCardCombinations = new HoleCardCombinations();
         ICombinatoricsVector<Card> initialVector = Factory.createVector(deck);
 
         for (ICombinatoricsVector<Card> comb : Factory.createSimpleCombinationGenerator(initialVector, 4)) {
-            for (int tp[] : inner) {
-                Card myOne = comb.getValue(tp[0]);
-                Card myTwo = comb.getValue(tp[1]);
-                HoleCards myHole = HoleCards.of(myOne, myTwo);
+            Set<Pair<HoleCards>> pairSet = holeCardCombinations.get(comb.getVector());
 
-                Card opOne = comb.getValue(tp[2]);
-                Card opTwo = comb.getValue(tp[3]);
-                HoleCards opHole = HoleCards.of(opOne, opTwo);
-
-                evaluateHoleCards(deck, board, myHole, opHole);
+            for (Pair<HoleCards> pair : pairSet) {
+                evaluateHoleCards(deck, board, pair.getFirst(), pair.getSecond());
             }
         }
     }

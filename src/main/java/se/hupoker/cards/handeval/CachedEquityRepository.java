@@ -31,7 +31,7 @@ public class CachedEquityRepository implements EquityRepository {
                 return matrix;
             }
 
-            matrix = EquityMatrixFactory.factory(board);
+            matrix = EquityMatrixFactory.calculate(board);
             serializer.serialize(matrix, boardFileLocation);
 
             return matrix;

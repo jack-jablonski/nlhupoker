@@ -1,6 +1,6 @@
 package se.hupoker.cards.boardenumerator;
 
-import se.hupoker.cards.isomorphisms.BoardTransformer;
+import se.hupoker.cards.isomorphisms.BoardTransform;
 import se.hupoker.common.Street;
 import se.hupoker.cards.CardSet;
 
@@ -14,10 +14,10 @@ import java.util.Set;
  */
 class IsomorphicBoardCache {
     private final Set<CardSet> cache = new HashSet<>();
-    private final BoardTransformer boardTransformer;
+    private final BoardTransform boardTransform;
 
     public IsomorphicBoardCache(Street street) {
-        boardTransformer = BoardTransformer.from(street);
+        boardTransform = BoardTransform.create(street);
     }
 
     /**
@@ -26,7 +26,7 @@ class IsomorphicBoardCache {
      * @return Have we seen this (isomorphic equal) board before?
      */
     public boolean seenAndAddBoard(CardSet board) {
-        CardSet isomorphic = boardTransformer.getIsomorphic(board);
+        CardSet isomorphic = boardTransform.getIsomorphic(board);
 
         return !cache.add(isomorphic);
     }

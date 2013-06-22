@@ -3,24 +3,19 @@ package se.hupoker.cards.isomorphisms;
 import se.hupoker.common.EnumCounter;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
-import se.hupoker.cards.Rank;
 import se.hupoker.cards.Suit;
+import se.hupoker.common.HarshMap;
 
-import java.util.Iterator;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
- *
  * When there are no more boards to come (meaning for river).
  *
  * @author Alexander Nyberg
  */
-class RiverBoardTransformer extends BoardTransformer {
-    private final BoardTransformer flushTransform = new DrawBoardTransformer();
-
+class RiverBoardTransform extends BoardTransform {
     @Override
-    public CardSet getIsomorphic(CardSet board) {
+    protected Map<Suit, Suit> getSuitMapping(CardSet board) {
         EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);
 
         for (Card card : board) {
@@ -44,27 +39,35 @@ class RiverBoardTransformer extends BoardTransformer {
      * @param board Contains completed flush draw.
      * @return
      */
-    private CardSet flushIsomorphic(CardSet board) {
-        return flushTransform.getIsomorphic(board);
+    private Map<Suit, Suit> flushIsomorphic(CardSet board) {
+        DrawBoardTransform drawBoardTransformer = new DrawBoardTransform();
+        return drawBoardTransformer.getSuitMapping(board);
     }
 
     /**
      * Perfect compression for no-flush-possible boards.
      *
      * @param board Does not have a possible flush.
-     * @return The same suit pattern for every rank-similar board.
+     * @return The same suit pattern for every rank-similar board
      */
-    private CardSet rainbowIsomorphic(CardSet board) {
-        CardSet isomorphic = new CardSet(board.size());
+    private Map<Suit, Suit> rainbowIsomorphic(CardSet board) {
         Iterator<Suit> suitIterator = new CircularIterator<>(getSortedSuits());
+        Map<Suit, Suit> map = new HarshMap<>();
 
-        SortedSet<Card> sorted = new TreeSet<>(board);
-        for (Card card : sorted) {
-            Rank rank = card.rankOf();
+        for (Card card : board) {
+            Suit suit = card.suitOf();
 
-            isomorphic.add(Card.from(rank, suitIterator.next()));
+            if (!map.containsKey(suit)) {
+                map.put(suit, suitIterator.next());
+            }
         }
 
-        return isomorphic;
+        for (Suit suit : Suit.allOf()) {
+            if (!map.containsKey(suit)) {
+                map.put(suit, suitIterator.next());
+            }
+        }
+
+        return map;
     }
 }
