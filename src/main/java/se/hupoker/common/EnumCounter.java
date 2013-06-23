@@ -32,8 +32,6 @@ public class EnumCounter<K extends Enum<K>> {
         if (counter.containsKey(k)) {
             int nextValue = counter.get(k) + 1;
             counter.put(k, nextValue);
-        } else {
-            counter.put(k, 1);
         }
 
         return counter.get(k);

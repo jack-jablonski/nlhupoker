@@ -74,7 +74,7 @@ public class DrawBoardTransformTest {
     }
 
     @Test
-    public void testSameMonotoneBoard() throws Exception {
+    public void testSameMonotoneBoard() {
         final CardSet simple = drawTransformer.getIsomorphic(CardSet.from("2c7dKh"));
         final CardSet isomorphic = drawTransformer.getIsomorphic(CardSet.from("2h7dKc"));
 
@@ -82,7 +82,7 @@ public class DrawBoardTransformTest {
     }
 
     @Test
-    public void testSameFlushingBoard() throws Exception {
+    public void testSameFlushingBoard() {
         final CardSet simple = drawTransformer.getIsomorphic(CardSet.from("2c7dKd"));
         final CardSet isomorphic = drawTransformer.getIsomorphic(CardSet.from("2d7cKc"));
 
@@ -90,7 +90,7 @@ public class DrawBoardTransformTest {
     }
 
     @Test
-    public void testDifferentSuitBoard() throws Exception {
+    public void testDifferentSuitBoard() {
         final CardSet simple = drawTransformer.getIsomorphic(CardSet.from("2c7hKh"));
         final CardSet isomorphic = drawTransformer.getIsomorphic(CardSet.from("2h7dKc"));
 

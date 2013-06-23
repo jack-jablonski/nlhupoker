@@ -6,6 +6,9 @@ import se.hupoker.cards.Suit;
 
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -13,6 +16,22 @@ import static org.junit.Assert.assertTrue;
  */
 public class RiverBoardTransformerTest {
     private RiverBoardTransform transform = new RiverBoardTransform();
+
+    @Test
+    public void transformOfRainbowBoardsAreEqual() {
+        CardSet one = transform.getIsomorphic(CardSet.from("2c7dKhKd5h"));
+        CardSet two = transform.getIsomorphic(CardSet.from("2s7dKhKs5h"));
+
+        assertEquals(one, two);
+    }
+
+    @Test
+    public void transformOfPossibleFlushIsNotEqualToRainbow() {
+        CardSet one = transform.getIsomorphic(CardSet.from("2c7dKhKd5h"));
+        CardSet two = transform.getIsomorphic(CardSet.from("2h7dKhKs5h"));
+
+        assertThat(one, not(two));
+    }
 
     @Test
     public void suitMappingForRainbowMapsAllSuits() {
