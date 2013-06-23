@@ -55,7 +55,7 @@ public class EquityMatrixTest {
 
 	private CardSet getRandomBoard(int numberOfCards) {
         List<Card> shuffled = DeckSet.shuffledDeck();
-        CardSet board = new CardSet(numberOfCards);
+        CardSet board = new CardSet();
 
         board.addAll(shuffled.subList(0, numberOfCards));
 

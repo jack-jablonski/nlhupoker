@@ -5,7 +5,6 @@ package se.hupoker.cards.cache;
  * @author Alexander Nyberg
  *
  */
-@Deprecated
 enum FlushConfiguration {
     None,
     /**

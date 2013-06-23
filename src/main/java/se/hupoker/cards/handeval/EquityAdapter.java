@@ -29,86 +29,16 @@ class EquityAdapter {
      * @param opHole Player 2 hole cards
      * @return The equity in 'myHole' vs 'opHole' on this board.
      */
-    protected double iterateBoards(int numberOfCards, DeckSet deck, CardSet board, HoleCards myHole, HoleCards opHole) {
+    protected double iterateBoards(EquityEvaluator evaluator, int numberOfCards, DeckSet deck, CardSet board, HoleCards myHole, HoleCards opHole) {
         final int numHoleIterations = IntMath.binomial(deck.size(), numberOfCards);
         double eqSum = 0;
 
         ICombinatoricsVector<Card> initialVector = Factory.createVector(deck);
         for (ICombinatoricsVector<Card> extra : Factory.createSimpleCombinationGenerator(initialVector, numberOfCards)) {
-            eqSum += getWithExtra(board, myHole, opHole, extra);
+            eqSum += evaluator.evaluateWithExtra(board, myHole, opHole, extra.getVector());
         }
 
         return eqSum / numHoleIterations;
-    }
-
-    /**
-     * For river evaluation only!
-     *
-     * @return The equity of 'myHole' versus 'opHole'
-     */
-    private double getWithExtra(CardSet board, HoleCards myHole, HoleCards opHole, ICombinatoricsVector<Card> extra) {
-        int myValue;
-        int opValue;
-
-        int numberOfBoardCards = board.size() + extra.getSize();
-        checkArgument(numberOfBoardCards==5);
-
-        if (extra.getSize() == 1) {
-            myValue = FastEval.eval7(myHole.first().ordinal(), myHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    board.at(3).ordinal(),
-                    extra.getValue(0).ordinal());
-
-            opValue = FastEval.eval7(opHole.first().ordinal(), opHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    board.at(3).ordinal(),
-                    extra.getValue(0).ordinal());
-        } else if (extra.getSize() == 2) {
-            myValue = FastEval.eval7(myHole.first().ordinal(), myHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    extra.getValue(0).ordinal(), extra.getValue(1).ordinal());
-
-            opValue = FastEval.eval7(opHole.first().ordinal(), opHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    extra.getValue(0).ordinal(), extra.getValue(1).ordinal());
-        } else {
-            throw new IllegalArgumentException("Extra must have 1 or 2 cards");
-        }
-
-        return getValue(myValue, opValue);
-    }
-
-    protected double get(CardSet board, HoleCards myHole, HoleCards opHole) {
-        int myValue;
-        int opValue;
-
-        if (board.size() == 3) {
-            myValue = FastEval.eval5(myHole.first().ordinal(), myHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal());
-
-            opValue = FastEval.eval5(opHole.first().ordinal(), opHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal());
-        } else if (board.size() == 4) {
-            myValue = FastEval.eval6(myHole.first().ordinal(), myHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(),
-                    board.at(2).ordinal(), board.at(3).ordinal());
-
-            opValue = FastEval.eval6(opHole.first().ordinal(), opHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(),
-                    board.at(2).ordinal(), board.at(3).ordinal());
-        } else if (board.size() == 5) {
-            myValue = FastEval.eval7(myHole.first().ordinal(), myHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    board.at(3).ordinal(), board.at(4).ordinal());
-
-            opValue = FastEval.eval7(opHole.first().ordinal(), opHole.last().ordinal(),
-                    board.at(0).ordinal(), board.at(1).ordinal(), board.at(2).ordinal(),
-                    board.at(3).ordinal(), board.at(4).ordinal());
-        } else {
-            throw new IllegalArgumentException(board.toString());
-        }
-
-        return getValue(myValue, opValue);
     }
 
     protected int getNumberOfRemainingCards(CardSet board) {
@@ -123,19 +53,4 @@ class EquityAdapter {
         }
     }
 
-    /**
-     *
-     * @param myValue Equivalence class value of the best five-card high poker hand of Player 1.
-     * @param opValue Equivalence class value of the best five-card high poker hand of Player 2.
-     * @return The corresponding equity value.
-     */
-    private double getValue(int myValue, int opValue) {
-        if (myValue > opValue) {
-            return EquityMeasure.AHEAD;
-        } else if (myValue == opValue) {
-            return EquityMeasure.TIED;
-        } else {
-            return EquityMeasure.BEHIND;
-        }
-    }
 }

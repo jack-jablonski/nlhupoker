@@ -13,7 +13,6 @@ import se.hupoker.cards.Suit;
  * @author Alexander Nyberg
  *
  */
-@Deprecated
 class StandardHoleRelation {
     private final CardSet board;
     private final EnumCounter<Suit> suitCounter = new EnumCounter<>(Suit.class);

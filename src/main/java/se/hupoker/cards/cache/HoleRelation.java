@@ -7,7 +7,6 @@ import se.hupoker.cards.RankIndex;
  *
  * @author Alexander Nyberg
  */
-@Deprecated
 class HoleRelation {
     private final int rank;
     private final FlushConfiguration flush;

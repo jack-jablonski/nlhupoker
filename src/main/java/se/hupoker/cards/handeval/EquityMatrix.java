@@ -1,6 +1,8 @@
 package se.hupoker.cards.handeval;
 
 import se.hupoker.cards.HoleCards;
+import se.hupoker.common.Endomorphism;
+import se.hupoker.common.IdentityMorphism;
 
 import java.io.Serializable;
 
@@ -14,29 +16,42 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class EquityMatrix implements Serializable {
     private final EquityTable equityTable;
+    private final Endomorphism<HoleCards> map;
 
     protected EquityMatrix(EquityTable equityTable) {
         this.equityTable = equityTable;
+        map = new IdentityMorphism<>();
+    }
+
+    protected EquityMatrix(EquityTable equityTable, Endomorphism<HoleCards> map) {
+        this.equityTable = equityTable;
+        this.map = map;
     }
 
     protected double getEquity(HoleCards myHole, HoleCards opHole) {
-        return equityTable.getEquities()[myHole.ordinal()][opHole.ordinal()];
+        HoleCards myMorphism = map.apply(myHole);
+        HoleCards opMorphism = map.apply(opHole);
+        return equityTable.getEquities()[myMorphism.ordinal()][opMorphism.ordinal()];
     }
 
     public float getApproximateHs(HoleCards hole) {
-        return EquityMeasure.getApproximateHs(equityTable.getEquities()[hole.ordinal()]);
+        HoleCards morphism = map.apply(hole);
+        return EquityMeasure.getApproximateHs(equityTable.getEquities()[morphism.ordinal()]);
     }
 
     public float getApproximatePpot(HoleCards hole) {
-        return EquityMeasure.getApproximatePpot(equityTable.getEquities()[hole.ordinal()]);
+        HoleCards morphism = map.apply(hole);
+        return EquityMeasure.getApproximatePpot(equityTable.getEquities()[morphism.ordinal()]);
     }
 
     public float getApproximateNpot(HoleCards hole) {
-        return EquityMeasure.getApproximatePpot(equityTable.getEquities()[hole.ordinal()]);
+        HoleCards morphism = map.apply(hole);
+        return EquityMeasure.getApproximatePpot(equityTable.getEquities()[morphism.ordinal()]);
     }
 
     // For river
     public float getAverageEquity(HoleCards hole) {
-        return EquityMeasure.getEquity(equityTable.getEquities()[hole.ordinal()]);
+        HoleCards morphism = map.apply(hole);
+        return EquityMeasure.getEquity(equityTable.getEquities()[morphism.ordinal()]);
     }
 }

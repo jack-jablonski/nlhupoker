@@ -3,11 +3,12 @@ package se.hupoker.cards.isomorphisms;
 import com.google.common.collect.ImmutableSortedSet;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
+import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.Suit;
+import se.hupoker.common.Endomorphism;
 import se.hupoker.common.Street;
 
-import java.util.Map;
-import java.util.SortedSet;
+import java.util.*;
 
 import static se.hupoker.common.Street.RIVER;
 
@@ -44,13 +45,15 @@ public abstract class BoardTransform {
      */
     public CardSet getIsomorphic(CardSet board) {
         Map<Suit, Suit> map = getSuitMapping(board);
-        CardSet set = new CardSet();
+        List<Card> cards = new ArrayList<>();
 
         for (Card card : board) {
             Card newCard = Card.from(card.rankOf(), map.get(card.suitOf()));
-            set.add(newCard);
+            cards.add(newCard);
         }
 
-        return set;
+        Collections.sort(cards);
+
+        return new CardSet(cards);
     }
 }

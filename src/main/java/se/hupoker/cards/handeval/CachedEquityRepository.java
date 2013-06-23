@@ -4,6 +4,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import se.hupoker.cards.CardSet;
+import se.hupoker.cards.isomorphisms.BoardTransform;
+import se.hupoker.cards.isomorphisms.HoleTransform;
 import se.hupoker.common.Serializer;
 import se.hupoker.common.Street;
 
@@ -21,24 +23,24 @@ public class CachedEquityRepository implements EquityRepository {
         this.equityDirectory = equityDirectory;
     }
 
-    private final CacheLoader<CardSet, EquityMatrix> cacheLoader = new CacheLoader<CardSet, EquityMatrix>() {
+    private final CacheLoader<CardSet, EquityTable> cacheLoader = new CacheLoader<CardSet, EquityTable>() {
         @Override
-        public EquityMatrix load(CardSet board) throws RuntimeException {
+        public EquityTable load(CardSet board) throws RuntimeException {
             final String boardFileLocation = getFileLocation(board);
 
-            EquityMatrix matrix = serializer.deserialize(EquityMatrix.class, boardFileLocation);
-            if (matrix != null) {
-                return matrix;
+            EquityTable table = serializer.deserialize(EquityTable.class, boardFileLocation);
+            if (table != null) {
+                return table;
             }
 
-            matrix = EquityMatrixFactory.calculate(board);
-            serializer.serialize(matrix, boardFileLocation);
+            table = EquityTableFactory.calculate(board);
+            serializer.serialize(table, boardFileLocation);
 
-            return matrix;
+            return table;
         }
     };
 
-    private final LoadingCache<CardSet, EquityMatrix> cache = CacheBuilder.newBuilder()
+    private final LoadingCache<CardSet, EquityTable> cache = CacheBuilder.newBuilder()
             .weakValues()
             .build(cacheLoader);
 
@@ -47,7 +49,9 @@ public class CachedEquityRepository implements EquityRepository {
     }
 
     @Override
-    public EquityMatrix get(Street Street, CardSet board) {
-        return cache.getUnchecked(board);
+    public EquityMatrix get(Street street, CardSet board) {
+        EquityTable equityTable = cache.getUnchecked(board);
+
+        return new EquityMatrix(equityTable);
     }
 }

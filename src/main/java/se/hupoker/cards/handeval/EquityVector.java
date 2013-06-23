@@ -12,21 +12,25 @@ import java.util.Arrays;
 
 
 /**
+ * Simple slow equity evaluator given (board, hole cards) combination.
+ *
  * @author Alexander Nyberg
  */
-final public class EquityVector  {
+public class EquityVector  {
     private final EquityMeasure measure = new EquityMeasure();
     private final EquityAdapter adapter = new EquityAdapter();
     // Maybe not use this at all.
 	private final float ahead[] = new float[HoleCards.TexasCombinations];
 	private final float equities[] = new float[HoleCards.TexasCombinations];
+    private final EquityEvaluator evaluator;
 
-	public EquityVector() {
-		Arrays.fill(ahead, EquityMeasure.BADEQUITY);
+    public EquityVector(EquityEvaluator evaluator) {
+        this.evaluator = evaluator;
+        Arrays.fill(ahead, EquityMeasure.BADEQUITY);
 		Arrays.fill(equities, EquityMeasure.BADEQUITY);
 	}
 
-	public double getEquity() {
+    public double getEquity() {
 		return measure.getEquity(equities);
 	}
 	
@@ -54,8 +58,8 @@ final public class EquityVector  {
 		/*
 		 * All his possible myHole cards
 		 */
-        ICombinatoricsVector<Card> initialVector = Factory.createVector(deck);
-        Generator<Card> generator = Factory.createSimpleCombinationGenerator(initialVector, HoleCards.TexasHoleCards);
+        ICombinatoricsVector<Card> deckVector = Factory.createVector(deck);
+        Generator<Card> generator = Factory.createSimpleCombinationGenerator(deckVector, HoleCards.TexasHoleCards);
         for (ICombinatoricsVector<Card> comb : generator) {
 			HoleCards opHole = HoleCards.of(comb.getVector());
 
@@ -64,10 +68,10 @@ final public class EquityVector  {
 
 			double equitySum = EquityMeasure.BADEQUITY;
 			if (remainingCards > 0) {
-				equitySum = adapter.iterateBoards(remainingCards, newDeck, board, myHole, opHole);
+				equitySum = adapter.iterateBoards(evaluator, remainingCards, newDeck, board, myHole, opHole);
 			}
 
-            ahead[opHole.ordinal()] = (float) adapter.get(board, myHole, opHole);
+            ahead[opHole.ordinal()] = (float) evaluator.evaluate(board, myHole, opHole);
 			equities[opHole.ordinal()] = (float) equitySum;
 		}
 	}

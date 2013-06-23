@@ -4,7 +4,6 @@ import java.util.*;
 
 /**
  * Container of full or near full deck of cards. Class is specialised for:
- * -> iteration
  * -> contains
  * -> removal
  *

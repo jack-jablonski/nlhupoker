@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Specialized CardSet:
  * -> Immutable, sorted Texas Holdem hole cards.
- * -> Implements an ordinal.
+ * -> Implements a static ordinal.
  *
  * @author Alexander Nyberg
  */

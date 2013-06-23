@@ -4,7 +4,6 @@ import com.google.common.math.IntMath;
 import org.junit.Test;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.common.Street;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +30,7 @@ public class HoleTransformTest {
                 continue;
             }
 
-            HoleCards isomorphic = holeTransform.getIsomorphic(hole);
+            HoleCards isomorphic = holeTransform.apply(hole);
             set.add(isomorphic);
         }
 
@@ -44,10 +43,10 @@ public class HoleTransformTest {
     @Test
     public void monotoneBoardsHaveIdenticalHoleCards() {
         HoleTransform first = new HoleTransform(CardSet.from("2c6cAc"));
-        HoleCards firstHole = first.getIsomorphic(HoleCards.from("KcJc"));
+        HoleCards firstHole = first.apply(HoleCards.from("KcJc"));
 
         HoleTransform second = new HoleTransform(CardSet.from("2d6dAd"));
-        HoleCards secondHole = second.getIsomorphic(HoleCards.from("KdJd"));
+        HoleCards secondHole = second.apply(HoleCards.from("KdJd"));
 
         assertEquals(firstHole, secondHole);
     }

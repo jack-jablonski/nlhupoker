@@ -16,6 +16,8 @@ import static com.google.common.base.Preconditions.checkArgument;
  * <p>Methods not otherwise documented forward to {@link ArrayList}<{@link Card}> or perform
  * as specified by the {@link Set} interface.
  *
+ * TODO: Make the composition a SortedList that screams on duplicates/nulls.
+ *
  * @author Steve Brecher
  * @version 2006Dec04.0
  */

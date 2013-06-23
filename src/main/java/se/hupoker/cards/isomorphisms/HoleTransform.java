@@ -5,6 +5,7 @@ import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.Suit;
+import se.hupoker.common.Endomorphism;
 
 import java.util.*;
 
@@ -13,7 +14,7 @@ import java.util.*;
  *
  * @author Alexander Nyberg
  */
-public class HoleTransform {
+public class HoleTransform implements Endomorphism<HoleCards> {
     private final CardSet board;
     private final SortedSet<Suit> immutableSuits;
 
@@ -43,7 +44,7 @@ public class HoleTransform {
      * @param original
      * @return The isomorphic equivalent wrt. board
      */
-    public HoleCards getIsomorphic(HoleCards original) {
+    public HoleCards apply(HoleCards original) {
         Map<Suit, Suit> map = getSuitMap(board);
         SortedSet<Suit> remaining = new TreeSet<>(immutableSuits);
         remaining.removeAll(map.values());
@@ -68,5 +69,4 @@ public class HoleTransform {
 //        System.out.println("Mapped " + original + " -> " + isoCards);
         return isoCards;
     }
-
 }
