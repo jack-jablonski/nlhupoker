@@ -7,7 +7,7 @@ import org.paukov.combinatorics.ICombinatoricsVector;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 import se.hupoker.common.DoubleMath;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 
 /**
  * @author Alexander Nyberg

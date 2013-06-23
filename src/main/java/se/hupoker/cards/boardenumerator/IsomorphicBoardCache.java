@@ -1,7 +1,7 @@
 package se.hupoker.cards.boardenumerator;
 
 import se.hupoker.cards.isomorphisms.BoardTransform;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.cards.CardSet;
 
 import java.util.HashSet;

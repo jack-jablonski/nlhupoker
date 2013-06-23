@@ -46,9 +46,7 @@ public class EquityMatrixTest {
 
         EquityMatrix me = EquityMatrixFactory.calculate(board);
 
-        /**
-         * Fails because of how EquityMatrix caches right now.
-         */
+         // TODO: Fails because of how EquityMatrix caches isomorphisms right now.
         boolean equal = DoubleMath.equal(hsValue, me.getAverageEquity(hole));
         assertTrue(equal);
     }

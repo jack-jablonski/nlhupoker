@@ -1,10 +1,10 @@
 package se.hupoker.inference.states;
 
 import com.google.common.base.Objects;
-import se.hupoker.common.Action;
-import se.hupoker.common.Betting;
-import se.hupoker.common.Position;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Action;
+import se.hupoker.poker.Betting;
+import se.hupoker.poker.Position;
+import se.hupoker.poker.Street;
 import se.hupoker.inference.BetPathDescription;
 
 import static com.google.common.base.Preconditions.checkState;

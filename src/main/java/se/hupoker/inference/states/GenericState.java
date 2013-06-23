@@ -1,10 +1,10 @@
 package se.hupoker.inference.states;
 
 import com.google.common.base.Objects;
-import se.hupoker.common.Betting;
+import se.hupoker.poker.Betting;
 import se.hupoker.common.DoubleMath;
-import se.hupoker.common.Position;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Position;
+import se.hupoker.poker.Street;
 
 /**
  * Immutable description of state.

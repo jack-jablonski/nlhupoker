@@ -1,10 +1,11 @@
-package se.hupoker.common;
+package se.hupoker.poker;
+
+import se.hupoker.common.DoubleMath;
 
 import java.math.BigDecimal;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static se.hupoker.common.ActionClassifier.*;
 
 
 /**
@@ -38,11 +39,11 @@ public class Action {
     }
 
     public boolean isAggressive() {
-        return ofClassifier(BET) || ofClassifier(RAISE);
+        return ofClassifier(ActionClassifier.BET) || ofClassifier(ActionClassifier.RAISE);
     }
 
 	public boolean isAddingMoney() {
-		return ofClassifier(CALL) || isAggressive();
+		return ofClassifier(ActionClassifier.CALL) || isAggressive();
 	}
 
     public ActionClassifier getClassifier() { return classifier; }

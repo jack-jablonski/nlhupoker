@@ -2,7 +2,7 @@ package se.hupoker.inference.handinformation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.handhistory.HandParser;
 import se.hupoker.handhistory.HeadsUp;
 import se.hupoker.handhistory.IllegalHandException;

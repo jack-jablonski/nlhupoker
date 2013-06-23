@@ -2,7 +2,7 @@ package se.hupoker.inference.handinformation;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import se.hupoker.common.ActionClassifier;
+import se.hupoker.poker.ActionClassifier;
 import se.hupoker.inference.states.PathElement;
 import se.hupoker.inference.states.PathHistory;
 
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import static se.hupoker.common.Street.PREFLOP;
+import static se.hupoker.poker.Street.PREFLOP;
 
 /**
  * @author Alexander Nyberg

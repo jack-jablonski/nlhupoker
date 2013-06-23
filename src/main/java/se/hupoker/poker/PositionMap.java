@@ -1,4 +1,4 @@
-package se.hupoker.common;
+package se.hupoker.poker;
 
 import java.util.EnumMap;
 

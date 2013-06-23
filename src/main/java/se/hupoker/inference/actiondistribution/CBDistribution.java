@@ -1,9 +1,8 @@
 package se.hupoker.inference.actiondistribution;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
-import se.hupoker.common.Action;
-import se.hupoker.common.ActionClassifier;
+import se.hupoker.poker.Action;
+import se.hupoker.poker.ActionClassifier;
 
 import java.util.EnumSet;
 

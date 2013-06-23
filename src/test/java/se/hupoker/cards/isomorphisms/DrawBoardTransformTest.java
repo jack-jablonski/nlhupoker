@@ -4,7 +4,6 @@ import org.junit.Test;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.Rank;
 import se.hupoker.cards.Suit;
-import se.hupoker.common.Street;
 
 import java.util.Map;
 

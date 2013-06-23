@@ -1,7 +1,7 @@
 package se.hupoker.inference.actiondistribution;
 
-import se.hupoker.common.Betting;
-import se.hupoker.common.Action;
+import se.hupoker.poker.Betting;
+import se.hupoker.poker.Action;
 import se.hupoker.inference.vectors.Distribution;
 import se.hupoker.inference.vectors.DoubleVector;
 

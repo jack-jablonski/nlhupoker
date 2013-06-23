@@ -1,7 +1,7 @@
 package se.hupoker.cards.handeval;
 
 import se.hupoker.cards.CardSet;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 
 /**
  * Has responsibility of providing the information required to cluster hole cards given some board.

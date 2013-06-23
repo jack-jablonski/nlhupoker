@@ -3,13 +3,17 @@ package se.hupoker.inference.states;
 import se.hupoker.common.*;
 import se.hupoker.handhistory.HeadsUp;
 import se.hupoker.handhistory.IllegalHandException;
+import se.hupoker.poker.Action;
+import se.hupoker.poker.Position;
+import se.hupoker.poker.PositionMap;
+import se.hupoker.poker.Street;
 
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static se.hupoker.common.Street.RIVER;
+import static se.hupoker.poker.Street.RIVER;
 
 /**
  * 

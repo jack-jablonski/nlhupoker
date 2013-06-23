@@ -1,7 +1,7 @@
 package se.hupoker.inference.states;
 
 
-import se.hupoker.common.StreetHistory;
+import se.hupoker.poker.StreetHistory;
 
 /**
  * Describes a walk along the game tree. 

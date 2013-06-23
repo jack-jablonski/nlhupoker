@@ -3,7 +3,7 @@ package se.hupoker.inference.tree;
 import se.hupoker.cards.CardSet;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.cards.HoleCards;
-import se.hupoker.common.PositionMap;
+import se.hupoker.poker.PositionMap;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.handinformation.HolePossible;
 import se.hupoker.inference.states.PathElement;

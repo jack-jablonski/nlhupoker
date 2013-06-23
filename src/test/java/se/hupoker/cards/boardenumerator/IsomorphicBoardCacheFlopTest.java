@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.paukov.combinatorics.Factory;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.ICombinatoricsVector;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
 

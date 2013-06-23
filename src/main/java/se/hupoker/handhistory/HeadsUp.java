@@ -4,7 +4,7 @@ import com.google.common.collect.Iterables;
 import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.common.*;
-import se.hupoker.common.ActionClassifier;
+import se.hupoker.poker.*;
 
 import java.math.BigDecimal;
 import java.util.EnumSet;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static se.hupoker.common.ActionClassifier.CALL;
-import static se.hupoker.common.ActionClassifier.CHECK;
-import static se.hupoker.common.ActionClassifier.FOLD;
-import static se.hupoker.common.Street.PREFLOP;
+import static se.hupoker.poker.ActionClassifier.CALL;
+import static se.hupoker.poker.ActionClassifier.CHECK;
+import static se.hupoker.poker.ActionClassifier.FOLD;
+import static se.hupoker.poker.Street.PREFLOP;
 
 /**
  * Describes one heads up hand history.

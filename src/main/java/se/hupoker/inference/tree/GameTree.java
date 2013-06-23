@@ -1,6 +1,6 @@
 package se.hupoker.inference.tree;
 
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.handinformation.HandInfo;
 import se.hupoker.inference.states.PathElement;

@@ -4,7 +4,7 @@ import se.hupoker.cards.CardSet;
 import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.handeval.EquityMatrix;
 import se.hupoker.cards.handeval.EquityRepository;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.inference.actiondistribution.ActionDistOptions;
 import se.hupoker.inference.actiondistribution.ActionDistribution;
 import se.hupoker.inference.states.GenericState;

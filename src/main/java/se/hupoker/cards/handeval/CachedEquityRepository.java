@@ -4,10 +4,8 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import se.hupoker.cards.CardSet;
-import se.hupoker.cards.isomorphisms.BoardTransform;
-import se.hupoker.cards.isomorphisms.HoleTransform;
 import se.hupoker.common.Serializer;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 
 /**
  * Double-cached repository: First in memory, then on disk.

@@ -3,14 +3,12 @@ package se.hupoker.cards.isomorphisms;
 import com.google.common.collect.ImmutableSortedSet;
 import se.hupoker.cards.Card;
 import se.hupoker.cards.CardSet;
-import se.hupoker.cards.HoleCards;
 import se.hupoker.cards.Suit;
-import se.hupoker.common.Endomorphism;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 
 import java.util.*;
 
-import static se.hupoker.common.Street.RIVER;
+import static se.hupoker.poker.Street.RIVER;
 
 /**
  * Provides a function that returns an isomorphic board wrt. ordering of

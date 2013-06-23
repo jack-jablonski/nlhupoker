@@ -1,6 +1,6 @@
 package se.hupoker.inference.tree;
 
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.inference.states.GenericState;
 
 import java.util.Collection;

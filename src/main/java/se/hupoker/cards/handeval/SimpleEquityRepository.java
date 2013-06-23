@@ -1,7 +1,7 @@
 package se.hupoker.cards.handeval;
 
 import se.hupoker.cards.CardSet;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 
 /**
  * @author Alexander Nyberg

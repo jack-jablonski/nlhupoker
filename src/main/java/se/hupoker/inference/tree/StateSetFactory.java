@@ -1,7 +1,7 @@
 package se.hupoker.inference.tree;
 
 import se.hupoker.cards.handeval.EquityRepository;
-import se.hupoker.common.Street;
+import se.hupoker.poker.Street;
 import se.hupoker.inference.holebucket.*;
 import se.hupoker.inference.states.GenericState;
 
